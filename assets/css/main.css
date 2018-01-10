@@ -6,12 +6,12 @@
 
 @font-face {
     font-family: Roboto;
-    src: url('/assets/fonts/Roboto-Regular.ttf');
+    src: url('../fonts/Roboto-Regular.ttf');
 }
 
 @font-face {
     font-family: CabinSketch;
-    src: url('/assets/fonts/CabinSketch-Regular.ttf');
+    src: url('../fonts/CabinSketch-Regular.ttf');
 }
 
 html, body {
@@ -63,7 +63,7 @@ aside > div.top {
     display: block;
     width: 100%;
     background-color: aqua;
-    background-image: url('/assets/sidenav-bg.png');
+    background-image: url('../sidenav-bg.png');
     background-size: cover;
     width: 300px;
 }
