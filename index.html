@@ -11,14 +11,17 @@
     </head>
     <body>
 
+        <!-- Top navigation -->
         <nav>
             <h1 id="menu-button" class="nav-button"><i class="fa fa-bars" aria-hidden="true"></i></h1> <h1 class="title">o-ToDo</h1> <h1 class="nav-button"><i class="fa fa-plus" aria-hidden="true"></i></h1>
         </nav>
 
+        <!-- Main section -->
         <main id="main">
 
             <h1>Your ToDo-list</h1>
 
+            <!-- Scoll list -->
             <section id="list">
 
                 <article>
@@ -45,6 +48,7 @@
 
         </main>
         
+        <!-- Side nav -->
         <aside id="side-menu">
 
             <div class="top">
@@ -62,21 +66,29 @@
                 <li><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log out</span></li>
             </ul>
 
+            <!-- Footer -->
             <footer>
                 olback © <span class="current-year"></span><br>
                 Please contribute on <a href="https://github.com/olback/o-todo" target="_blank" class="contribute">GitHub</a>!
             </footer>
 
-            <noscript>
-                <div class="container">
-                    <div class="inner">
-                        <h1>JavaScript is required!</h1>
-                        <p>This application/site requires JavaScript to function properly.</p>
-                    </div>
-                </div>
-            </noscript>
-
         </aside>
 
+        <!-- Displayed when JavaScript is dissabled. -->
+        <noscript>
+            <div class="container">
+                <div class="inner">
+                    <h1>JavaScript is required!</h1>
+                    <p>This application/site requires JavaScript to function properly.</p>
+                </div>
+            </div>
+        </noscript>
+
+
+        <div class="modal" id="add-note">
+            <div class="inner">
+                <i class="fa fa-close" aria-hidden="true"></i>
+            </div>
+        </div>
     </body>
 </html>
