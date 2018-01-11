@@ -70,7 +70,7 @@ aside > div.top {
 
 figure {
     margin: 0;
-    padding-top: 50px;
+    padding-top: 40px;
     padding-left: 20px;
     bottom: 10px;
 }
@@ -82,7 +82,12 @@ figure > img {
 }
 
 figcaption {
-    color: #e8e8e8;
+    color: #333;
+    background-color: white;
+    padding: 4px 6px;
+    width: min-content;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    margin-top: 5px;
 }
 
 aside > ul {
@@ -148,8 +153,6 @@ article {
     height: 360px;
     width: 250px;
     background-color: white;
-    box-shadow: 1px 1px 1px gray;
-    box-shadow: 1px 1px 2px inset gray;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     margin: 20px;
     padding: 20px;
@@ -193,6 +196,12 @@ article > p {
     background-color: rgba(0,0,0,0.15);
 }
 
+.title {
+    font-size: 2em;
+    margin: 0;
+    padding-top:9px;
+}
+
 #menu-button {
     float: left !important;
     margin-left: 12px;
@@ -206,6 +215,61 @@ article > p {
 .contribute:hover {
     color: #555;
 }
+
+noscript {
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0, 0.3);
+}
+
+noscript > div.container {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    width: 70%;
+    height: 70%;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+noscript > div.container > div.inner {
+    display: block;
+    margin: auto;
+    width: 100%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+noscript > div.container > div.inner > h1 {
+    margin: auto;
+    display: block;
+    text-align: center;
+    padding: 20px;
+    padding-top: 40px;
+}
+
+noscript > div.container > div.inner > p {
+    margin: auto;
+    display: block;
+    text-align: center;
+    padding: 20px;
+}
+
+div.modal {
+    /* Add modal css */
+}
+
+
 
 ::-webkit-scrollbar {
     height: 3px;
@@ -223,4 +287,24 @@ article > p {
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #888;
+}
+
+@media only screen and (max-width: 600px) {
+    
+    noscript > div.container {
+        width: 95%;
+    }
+
+    .nav-button {
+        margin:0;
+    }
+
+    #menu-button {
+        margin-left: 0px;
+    }
+
+    .title {
+        margin-left: 20px;
+    }
+
 }
