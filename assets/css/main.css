@@ -86,7 +86,7 @@ figcaption {
     background-color: white;
     padding: 4px 6px;
     width: min-content;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     margin-top: 5px;
 }
 
@@ -115,10 +115,14 @@ aside > ul > li:hover {
     color: #333;
 }
 
+aside > ul > li:last-child {
+    box-shadow: 0 1px 10px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
 footer {
     bottom: 10px !important;
     position: absolute;
-    color: gray;
+    color: #aaa;
     display: block;
     width: 100%;
     font-size: 1em;
@@ -154,10 +158,11 @@ article {
     width: 250px;
     background-color: white;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    border-radius: 2px;
     margin: 20px;
     padding: 20px;
     vertical-align: middle;
-    transition: 0.3s;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 article:hover {
@@ -168,6 +173,7 @@ article:hover {
 article > * {
     margin: 0;
     padding: 0;
+    user-select: none;
 }
 
 article > p {
@@ -208,7 +214,7 @@ article > p {
 }
 
 .contribute {
-    color: #333;
+    color: #888;
     transition: 0.1s;
 }
 
@@ -267,7 +273,7 @@ noscript > div.container > div.inner > p {
 
 div.modal {
     /* Add modal css */
-    display: block;
+    display: none;
     top: 0;
     left: 0;
     width: 100%;
@@ -275,6 +281,8 @@ div.modal {
     background-color: rgba(0,0,0, 0.3);
     z-index: 30;
     position: fixed;
+    animation: fadein 0.2s;
+    -webkit-animation: fadein 0.2s;
 }
 
 div.modal > div.inner {
@@ -289,7 +297,7 @@ div.modal > div.inner {
     box-shadow: 0 10px 20px rgba(170, 77, 77, 0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
-div.modal > div.inner > i.fa-close{
+div.modal > div.inner > i.close-modal {
     float: right;
     padding: 20px;
     font-size: 2em;
@@ -297,6 +305,13 @@ div.modal > div.inner > i.fa-close{
     cursor: pointer;
 }
 
+div.modal > div.inner > h1 {
+    font-size: 2em;
+    margin: 20px;
+    float: left;
+    line-height: 1em;
+    display: block;
+}
 
 ::-webkit-scrollbar {
     height: 3px;
@@ -314,6 +329,16 @@ div.modal > div.inner > i.fa-close{
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #888;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 @media only screen and (max-width: 600px) {

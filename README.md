@@ -13,4 +13,4 @@ By using some else's note taking app, you rely on their security and that they w
 * [Roboto](https://github.com/google/roboto/) is licensed under [Apache 2.0](https://github.com/google/roboto/blob/master/LICENSE)
 * [Cabin Sketch](http://www.impallari.com/cabinsketch) is licensed under [OFL 1.1](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL)
 * [Font Awesome](https://github.com/FortAwesome/Font-Awesome) is licensed under [OFL 1.1](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL)
-* Sample images from [Pixbay](https://pixabay.com/) licensed under Creative Commons. [ToC](https://pixabay.com/en/service/terms/#usage)
+* Images/icons from [Pixbay](https://pixabay.com/) licensed under Creative Commons. [ToC](https://pixabay.com/en/service/terms/#usage)

@@ -7,36 +7,36 @@
 const log = console.log;
 const current_year = new Date().getFullYear();
 
+
 window.onload = () => {
 
     const year_elements = document.getElementsByClassName('current-year');
-
-    for(let i = 0; i < year_elements.length; i++) {
-        year_elements[i].innerHTML = current_year;
-    }
-
-
-    const menu_button = document.getElementById('menu-button');
     const side_menu = document.getElementById('side-menu');
-    const main = document.getElementById('main');
     const list = document.getElementById('list');
     const body = document.getElementsByTagName('body');
 
-    menu_button.onclick = () => {
+    for(let i = 0; i < year_elements.length; i++) {
+
+        year_elements[i].innerHTML = current_year;
+
+    }
+
+    document.getElementById('menu-button').onclick = () => {
 
         side_menu.style.width = '300px';
 
     }
 
-    main.onclick = () => {
+    document.getElementById('main').onclick = () => {
 
         side_menu.style.width = 0;
 
     }
 
     list.ondrag = (e) => {
-        log(e);
+
         list.scrollBy(e.deltaY, 0);
+
     }
 
     list.onwheel = (e) => {
@@ -90,6 +90,64 @@ window.onload = () => {
             side_menu.style.width = '300px';
 
         }
+
+    }
+
+    const modal_close_buttons = document.getElementsByClassName('close-modal');
+
+    for(let i = 0; i < modal_close_buttons.length; i++) {
+
+        modal_close_buttons[i].onclick = (e) => {
+
+            let modal = modal_close_buttons[i].parentElement.parentElement;
+            modal.style.display = 'none';
+
+        }
+
+    }
+
+
+    const add_note_buttons = document.getElementsByClassName('add-note-button');
+
+    for(let i = 0; i < add_note_buttons.length; i++) {
+        add_note_buttons[i].onclick = () => {
+            openModal('add-note');
+        }
+    }
+
+    document.getElementById('profile-button').onclick = () => {
+        openModal('profile');
+    }
+
+    document.getElementById('admin-button').onclick = () => {
+        openModal('admin');
+    }
+
+    function openModal(m) {
+
+        side_menu.style.width = 0;
+        document.getElementById(m).style.display = 'block';
+    
+    }
+
+    const articles = document.getElementsByTagName('article');
+
+    for(let i = 0; i < articles.length; i++) {
+
+        // TODO: Handle article actions here.
+        // Swipe up, mark as done.
+        // Tap to edit.
+
+    }
+
+    if ('serviceWorker' in navigator) {
+
+        navigator.serviceWorker.register('service-worker.js');
+        console.log('Service-worker registerd!');
+
+    } else {
+
+        console.error('Service-workers not supported.');
 
     }
 
