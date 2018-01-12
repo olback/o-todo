@@ -106,28 +106,3 @@ self.addEventListener('fetch', event => {
   // event.respondWith(). If no fetch handlers call event.respondWith(), the request will be
   // handled by the browser as if there were no service worker involvement.
 });
-
-/* self.addEventListener('install', function(event) {
-  event.waitUntil(
-    caches.open(CURRENT_CACHES.offline).then(function(cache) {
-      return cache.addAll(
-        [
-          'assets/css/main.css',
-          'assets/css/font-awesome.min.css',
-          'assets/fonts/CabinSketch-Regular.ttf',
-          'assets/fonts/fontawesome-webfont.ttf',
-          'assets/fonts/Roboto-Regular.ttf',
-          'assets/offline.html',
-          'assets/icons/icon-48.png',
-          'assets/icons/icon-72.png',
-          'assets/icons/icon-96.png',
-          'assets/icons/icon-144.png',
-          'assets/icons/icon-168.png',
-          'assets/icons/icon-192.png',
-          'assets/main.js',
-          'assets/sidenav-bg.png'
-        ]
-      );
-    })
-  );
-}); */

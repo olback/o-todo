@@ -63,7 +63,7 @@ aside > div.top {
     display: block;
     width: 100%;
     background-color: aqua;
-    background-image: url('../sidenav-bg.png');
+    background-image: url('../images/sidenav-bg.png');
     background-size: cover;
     width: 300px;
 }
@@ -79,6 +79,7 @@ figure > img {
     border-radius: 50%;
     width: 54px;
     height: 54px;
+    display: block;
 }
 
 figcaption {
@@ -127,7 +128,7 @@ footer {
     width: 100%;
     font-size: 1em;
     padding: 10px 20px;
-    width: 300px;
+    width: 260px;
 }
 
 main {
@@ -148,7 +149,7 @@ section {
     overflow-x: auto;
     white-space: nowrap;
     z-index: 9;
-    padding: 50px;
+    padding: 40px;
     padding-top: 0;
 }
 
@@ -220,6 +221,10 @@ article > p {
 
 .contribute:hover {
     color: #555;
+}
+
+#version {
+    padding-left: 10px;
 }
 
 noscript {
