@@ -1,8 +1,10 @@
-/*
-    o-todo
-    https://github.com/olback/o-todo
-
-*/
+/**
+ *  o-todo
+ *  https://github.com/olback/o-todo
+ *
+ *  This also needs a re-write :3
+ *
+ */
 
 const log = console.log;
 const current_year = new Date().getFullYear();
@@ -15,30 +17,35 @@ window.onload = () => {
     const list = document.getElementById('list');
     const body = document.getElementsByTagName('body');
 
+    // Fill in the current year.
     for(let i = 0; i < year_elements.length; i++) {
 
         year_elements[i].innerHTML = current_year;
 
     }
 
+    // Open menu.
     document.getElementById('menu-button').onclick = () => {
 
         side_menu.style.width = '300px';
 
     }
 
+    // Close meny when clicking outside.
     document.getElementById('main').onclick = () => {
 
         side_menu.style.width = 0;
 
     }
 
-    list.ondrag = (e) => {
+    // What does this do??
+    // list.ondrag = (e) => {
 
-        list.scrollBy(e.deltaY, 0);
+    //     list.scrollBy(e.deltaY, 0);
 
-    }
+    // }
 
+    // Let the user use the scroll wheel to scroll sideways.
     list.onwheel = (e) => {
 
         side_menu.style.width = 0;
@@ -55,12 +62,14 @@ window.onload = () => {
 
     }
 
+    // When scrolling, close the nav.
     list.onscroll = () => {
 
         side_menu.style.width = 0;
 
     }
 
+    // Close sidenav when 'swipe-closing'.
     let s_txs;
     side_menu.ontouchstart = (e) => {
 
@@ -76,6 +85,7 @@ window.onload = () => {
 
     }
 
+    // Open sidenav on swipe from the left edge.
     let b_txs;
     body[0].ontouchstart = (e) => {
 
@@ -93,8 +103,8 @@ window.onload = () => {
 
     }
 
+    // Close modal when clicking the X
     const modal_close_buttons = document.getElementsByClassName('close-modal');
-
     for(let i = 0; i < modal_close_buttons.length; i++) {
 
         modal_close_buttons[i].onclick = (e) => {
@@ -106,9 +116,8 @@ window.onload = () => {
 
     }
 
-
+    // Add note button action
     const add_note_buttons = document.getElementsByClassName('add-note-button');
-
     for(let i = 0; i < add_note_buttons.length; i++) {
         add_note_buttons[i].onclick = () => {
             openModal('add-note');
@@ -134,21 +143,56 @@ window.onload = () => {
 
     for(let i = 0; i < articles.length; i++) {
 
-        // TODO: Handle article actions here.
-        // Swipe up, mark as done.
-        // Tap to edit.
+        articles[i].onclick = (e) => {
+            // TODO: Edit note.
+        }
+
+        let a_pos_y;
+        articles[i].ontouchstart = (e) => {
+            a_pos_y = e.touches[0].clientY;
+        }
+
+        articles[i].ontouchmove = (e) => {
+            let diff = a_pos_y - e.touches[0].clientY;
+
+            if(diff > 100) {
+                swipeUp(articles[i]);
+                // TODO: Remove note from database.
+            }
+        }
 
     }
 
-    if ('serviceWorker' in navigator) {
-
-        navigator.serviceWorker.register('service-worker.js');
-        console.log('Service-worker registerd!');
-
-    } else {
-
-        console.error('Service-workers not supported.');
-
+    // Click to copy API Key
+    const api_key = document.getElementById('api-key');
+    api_key.onclick = () => {
+        api_key.select();
+        document.execCommand('copy');
     }
+
+
+}
+
+// Handle the swipeUp action.
+function swipeUp(article) {
+
+    article.style.opacity = '0';
+    setTimeout(() => {
+        article.style.display = 'none';
+    }, 300);
+
+
+}
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+
+    navigator.serviceWorker.register('service-worker.js').then(() => {
+        log('Service-worker registerd');
+    })
+
+} else {
+
+    console.error('Service-workers not supported.');
 
 }

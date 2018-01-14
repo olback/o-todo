@@ -91,20 +91,50 @@
         </noscript>
 
 
+        <!-- Add note-->
         <div class="modal" id="add-note">
             <div class="inner">
                 <i class="fa fa-close close-modal" aria-hidden="true"></i>
-                <h1>Add note</h1>
+                <h1>Add note</h1><br>
+                <form action="" method="POST">
+                    <label for="input-title">Title</label>
+                    <input type="text" name="note-title" id="note-title">
+                    <label for="note-note">Note</label>
+                    <textarea name="note-note" id="note-note" style="height: 80px;"></textarea>
+                    <label for="note-due-date">Due date</label>
+                    <input type="date" name="note-due-date" id="note-due-date">
+                    <label for="note-importance">Importance</label>
+                    <input type="number" name="note-importance" id="note-importance" min="0" value="0" max="100">
+                    <input type="submit" name="note-submit" value="Add note" style="display:block;margin:15px auto;">
+                </form>
             </div>
         </div>
 
+        <!-- Profile -->
         <div class="modal" id="profile">
             <div class="inner">
                 <i class="fa fa-close close-modal" aria-hidden="true"></i>
-                <h1>Profile</h1>
+                <h1>Profile</h1><br>
+                <figure>
+                    <img src="assets/images/profile_img.png" alt="Profile image"/>
+                    <figcaption>Demo</figcaption>
+                </figure>
+                <form action="" method="post">
+                    <label for="api-key">API Key</label>
+                    <input type="text" id="api-key" readonly="readonly" value="0UagHLS6KdTJ2yQ105K9">
+
+                    <label for="color">Color</label>
+                    <input type="color" id="color">
+
+                    <div class="buttons">
+                        <button class="clear">Reset API Key</button>
+                        <input type="submit" value="Save" style="width: 100px;">
+                    </div>
+                </form>
             </div>
         </div>
 
+        <!-- App settings -->
         <div class="modal" id="admin">
             <div class="inner">
                 <i class="fa fa-close close-modal" aria-hidden="true"></i>
