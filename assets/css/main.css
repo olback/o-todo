@@ -365,6 +365,10 @@ button:hover, input[type=submit]:hover {
     width: max-content;
 }
 
+.hidden {
+    display: none;
+}
+
 .clear {
     border: 1px solid #888;
     background-color: transparent;

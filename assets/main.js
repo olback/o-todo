@@ -24,6 +24,9 @@ window.onload = () => {
 
     }
 
+    // Set date to today.
+    document.getElementById('new-note-create-date').valueAsDate = new Date();
+
     // Open menu.
     document.getElementById('menu-button').onclick = () => {
 

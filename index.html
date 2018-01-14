@@ -8,7 +8,10 @@
         <link href="assets/css/main.css" rel="stylesheet" />
         <link href="assets/css/font-awesome.min.css" rel="stylesheet"/>
         <script src="assets/main.js"></script>
-        <link rel="manifest" href="manifest.json">
+        <link rel="shortcut icon" href="assets/icons/icon-96.png" />
+        <meta HTTP-EQUIV="Pragma" CONTENT="no-cache" />
+        <meta HTTP-EQUIV="Expires" CONTENT="-1" />
+        <link rel="manifest" href="manifest.json" />
     </head>
     <body>
 
@@ -105,6 +108,7 @@
                     <input type="date" name="note-due-date" id="note-due-date">
                     <label for="note-importance">Importance</label>
                     <input type="number" name="note-importance" id="note-importance" min="0" value="0" max="100">
+                    <input type="date" id="new-note-create-date" class="hidden" />
                     <input type="submit" name="note-submit" value="Add note" style="display:block;margin:15px auto;">
                 </form>
             </div>
