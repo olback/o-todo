@@ -6,9 +6,11 @@
  *
  */
 
+let api_url = 'assets/test/sample-list.json';
+//let api_url = 'api/api.php';
+
 const log = console.log;
 const current_year = new Date().getFullYear();
-
 
 window.onload = () => {
 
@@ -174,6 +176,10 @@ window.onload = () => {
     }
 
 
+    document.getElementById('refresh').onclick = () => {
+        window.location.reload();
+    }
+
 }
 
 // Handle the swipeUp action.
@@ -184,6 +190,51 @@ function swipeUp(article) {
         article.style.display = 'none';
     }, 300);
 
+
+}
+
+function json(response) {
+    //log(response.status);
+    return response.json();
+}
+
+function fetchNotes(key) {
+
+    fetch(api_url, {
+        method: 'post',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        body: "?api_key="+key+"&action=fetchNotes",
+        credentials: 'include'
+    })
+    .then(json)
+    .then(function (data) {
+        log('Request succeeded with JSON response', data);
+
+        for(let i = 0; i < data.notes.length; i++) {
+
+            let article = document.createElement('article');
+            let h3 = document.createElement('h3');
+            let p = document.createElement('p');
+            let span = document.createElement('span');
+            h3.innerHTML = data.notes[i].title;
+            p.innerHTML = data.notes[i].body;
+            span.innerHTML = data.notes[i].due;
+            article.appendChild(h3);
+            article.appendChild(p);
+            article.appendChild(span);
+
+            article.setAttribute("note-id", data.notes[i].id);
+            article.setAttribute("created", data.notes[i].created);
+            article.setAttribute("importance", data.notes[i].importance);
+    
+            list.appendChild(article);
+        }
+    })
+    .catch(function (error) {
+        console.log('Request failed', error);
+    });
 
 }
 
@@ -199,3 +250,5 @@ if ('serviceWorker' in navigator) {
     console.error('Service-workers not supported.');
 
 }
+
+fetchNotes();

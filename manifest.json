@@ -8,6 +8,7 @@
     "theme_color": "#ffcc00",
     "orientation": "portrait",
     "lang": "en-US",
+    "version": 0.1,
     "icons": [{
       "src": "assets/icons/icon-48.png",
       "sizes": "48x48",

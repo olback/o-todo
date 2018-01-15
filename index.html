@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>&lt;username&gt; | o-todo</title>
+        <title>Demo | o-todo</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffcc00" />
-        <link href="assets/css/main.css" rel="stylesheet" />
-        <link href="assets/css/font-awesome.min.css" rel="stylesheet"/>
-        <script src="assets/main.js"></script>
-        <link rel="shortcut icon" href="assets/icons/icon-96.png" />
+        <meta name="mobile-web-app-capable" content="yes">
         <meta HTTP-EQUIV="Pragma" CONTENT="no-cache" />
         <meta HTTP-EQUIV="Expires" CONTENT="-1" />
+        <link href="assets/css/main.css" rel="stylesheet" />
+        <link href="assets/css/font-awesome.min.css" rel="stylesheet"/>
+        <link rel="shortcut icon" href="assets/icons/icon-96.png" />
         <link rel="manifest" href="manifest.json" />
+        <script src="assets/main.js"></script>
     </head>
     <body>
 
@@ -27,32 +28,11 @@
 
             <!-- Scoll list -->
             <section id="list">
-
                 <article>
-                    <h3>Settings</h3>
-                    <p>A settings modal for the note app and the user.</p>
+                    <h3>Test note</h3>
+                    <p>It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess </p>
+                    <span>2018-01-31</span>
                 </article>
-
-                <article>
-                    <h3>Backend</h3>
-                    <p>Backend with PHP and MySQL</p>
-                </article>
-                
-                <article>
-                    <h3>New note</h3>
-                    <p>New note modal</p>
-                </article>
-
-                <article>
-                    <h3>Admin modal</h3>
-                    <p>Site settings</p>
-                </article>
-                
-                <article>
-                    <h3>Noscript</h3>
-                    <p>Fix noscript css...</p>
-                </article>
-                
             </section>
 
         </main>
@@ -69,7 +49,7 @@
 
             <ul>
                 <li class="add-note-button"><i class="fa fa-plus" aria-hidden="true"></i> <span>Add note</span></li>
-                <li onclick="window.location=window.location.href"><i class="fa fa-refresh" aria-hidden="true"></i> <span>Reload</span></li>
+                <li id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i> <span>Reload</span></li>
                 <li id="profile-button"><i class="fa fa-user-circle-o" aria-hidden="true"></i> <span>Profile</span></li>
                 <li id="admin-button"><i class="fa fa-wrench" aria-hidden="true"></i> <span>Admin</span></li>
                 <li id="logout-button"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log out</span></li>
@@ -126,9 +106,6 @@
                 <form action="" method="post">
                     <label for="api-key">API Key</label>
                     <input type="text" id="api-key" readonly="readonly" value="0UagHLS6KdTJ2yQ105K9">
-
-                    <label for="color">Color</label>
-                    <input type="color" id="color">
 
                     <div class="buttons">
                         <button class="clear">Reset API Key</button>
