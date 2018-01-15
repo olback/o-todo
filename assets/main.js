@@ -194,7 +194,7 @@ function swipeUp(article) {
 }
 
 function json(response) {
-    //log(response.status);
+    //log(response.status + ' ' + response.statusText);
     return response.json();
 }
 
@@ -210,7 +210,7 @@ function fetchNotes(key) {
     })
     .then(json)
     .then(function (data) {
-        log('Request succeeded with JSON response', data);
+        //log('Request succeeded with JSON response', data);
 
         for(let i = 0; i < data.notes.length; i++) {
 
