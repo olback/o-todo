@@ -32,9 +32,9 @@
                     <h3>Add a note</h3>
                     <p>Click the <i class="fa fa-plus" aria-hidden="true"></i> icon at the top of the screen or via the sidemenu.</p>
                 </div>
-                <article>
+                <article title="Test note" note="It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess" due="2018-01-30" note-id="-1" created="2018-01-15" importance="50">
                     <h3>Test note</h3>
-                    <p>It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess </p>
+                    <p>It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess</p>
                     <span>2018-01-31</span>
                 </article>
             </section>
@@ -94,6 +94,26 @@
                     <input type="number" name="note-importance" id="note-importance" min="0" value="0" max="100">
                     <input type="date" id="new-note-create-date" class="hidden" />
                     <input type="submit" name="note-submit" value="Add note" style="display:block;margin:15px auto;">
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit note-->
+        <div class="modal" id="edit-note">
+            <div class="inner">
+                <i class="fa fa-close close-modal" aria-hidden="true"></i>
+                <h1>Edit note</h1><br>
+                <form action="" method="POST">
+                    <label for="edit-note-title">Title</label>
+                    <input type="text" name="edit-note-title" id="edit-note-title">
+                    <label for="edit-note-note">Note</label>
+                    <textarea name="edit-note-note" id="edit-note-note" style="height: 80px;"></textarea>
+                    <label for="edit-note-due-date">Due date</label>
+                    <input type="date" name="edit-note-due-date" id="edit-note-due-date">
+                    <label for="edit-note-importance">Importance</label>
+                    <input type="number" name="edit-note-importance" id="edit-note-importance" min="0" value="0" max="100">
+                    <input type="text" name="edit-note-id" id="edit-note-id" class="hidden">
+                    <input type="submit" name="edit-note-submit" value="Update note" style="display:block;margin:15px auto;">
                 </form>
             </div>
         </div>

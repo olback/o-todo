@@ -7,6 +7,7 @@
  */
 
 let api_url = 'assets/test/sample-list.json';
+const API_KEY = '';
 //let api_url = 'api/api.php';
 
 const log = console.log;
@@ -42,13 +43,6 @@ window.onload = () => {
         side_menu.style.width = 0;
 
     }
-
-    // What does this do??
-    // list.ondrag = (e) => {
-
-    //     list.scrollBy(e.deltaY, 0);
-
-    // }
 
     // Let the user use the scroll wheel to scroll sideways.
     list.onwheel = (e) => {
@@ -149,7 +143,13 @@ window.onload = () => {
     for(let i = 0; i < articles.length; i++) {
 
         articles[i].onclick = (e) => {
-            // TODO: Edit note.
+            document.getElementById('edit-note').style.display = 'block';
+            document.getElementById('edit-note-title').value = articles[i].getAttribute('title');
+            document.getElementById('edit-note-note').innerHTML = articles[i].getAttribute('note');
+            document.getElementById('edit-note-due-date').value = articles[i].getAttribute('due');
+            document.getElementById('edit-note-importance').value = articles[i].getAttribute('importance');
+            document.getElementById('edit-note-id').value = articles[i].getAttribute('note-id');
+            // TODO: Send updated note to database.
         }
 
         let a_pos_y;
@@ -160,7 +160,7 @@ window.onload = () => {
         articles[i].ontouchmove = (e) => {
             let diff = a_pos_y - e.touches[0].clientY;
 
-            if(diff > 100) {
+            if(diff > 150) {
                 swipeUp(articles[i]);
                 // TODO: Remove note from database.
             }
@@ -217,12 +217,12 @@ function json(response) {
 
 function fetchNotes(key) {
 
-    fetch(api_url, {
-        method: 'post',
+    fetch(api_url+'?api_key='+API_KEY+'&action=list', {
+        method: 'get',
         headers: {
             "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
         },
-        body: "?api_key="+key+"&action=fetchNotes",
+        //body: "?api_key="+key+"&action=fetchNotes",
         credentials: 'include'
     })
     .then(json)
@@ -242,6 +242,9 @@ function fetchNotes(key) {
             article.appendChild(p);
             article.appendChild(span);
 
+            article.setAttribute("title", data.notes[i].title);
+            article.setAttribute("note", data.notes[i].body);
+            article.setAttribute("due", data.notes[i].due);
             article.setAttribute("note-id", data.notes[i].id);
             article.setAttribute("created", data.notes[i].created);
             article.setAttribute("importance", data.notes[i].importance);
