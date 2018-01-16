@@ -6,9 +6,9 @@
  *
  */
 
-let api_url = 'assets/test/sample-list.json';
-const API_KEY = '';
-//let api_url = 'api/api.php';
+const api_url = 'assets/test/sample-list.json';
+//const api_url = 'api/api.php';
+const API_KEY = ''; // Get this from cooke?
 
 const log = console.log;
 const current_year = new Date().getFullYear();
@@ -149,6 +149,9 @@ window.onload = () => {
             document.getElementById('edit-note-due-date').value = articles[i].getAttribute('due');
             document.getElementById('edit-note-importance').value = articles[i].getAttribute('importance');
             document.getElementById('edit-note-id').value = articles[i].getAttribute('note-id');
+            document.getElementById('edit-mark-done').onclick = () => {
+                noteDone(articles[i]);
+            }
             // TODO: Send updated note to database.
         }
 
@@ -161,7 +164,7 @@ window.onload = () => {
             let diff = a_pos_y - e.touches[0].clientY;
 
             if(diff > 150) {
-                swipeUp(articles[i]);
+                noteDone(articles[i]);
                 // TODO: Remove note from database.
             }
         }
@@ -183,25 +186,35 @@ window.onload = () => {
 }
 
 // Show 'Add Note hint' when there are no articles
-function showHint() {
+function showHint(title, body, isError) {
     let cn = list.childNodes;
     for(let i = 0; i < cn.length; i++) {
         if(cn[i].nodeName == 'ARTICLE') {
             if(cn[i].style.display != 'none') {
-                document.getElementById('add-note-hint').style.display = 'none';
+                document.getElementById('hint').style.display = 'none';
                 break;
             }
         } else {
-            document.getElementById('add-note-hint').style.display = 'block';
+            document.getElementById('hint').style.display = 'block';
+            if(title && body) {
+                document.getElementById('hint-title').innerHTML = title;
+                document.getElementById('hint-body').innerHTML = body;
+                if(isError) {
+                    document.getElementById('hint-title').style.color = 'tomato';
+                } else {
+                    document.getElementById('hint-title').style.color = 'initial';
+                }
+            }
         }
     }
 }
 
-// Handle the swipeUp action.
-function swipeUp(article) {
+// Handle the noteDone action.
+function noteDone(article) {
 
     if(article) {
         article.style.opacity = '0';
+        document.getElementById('edit-note').style.display = 'none';
         setTimeout(() => {
             article.style.display = 'none';
             showHint();
@@ -211,50 +224,71 @@ function swipeUp(article) {
 }
 
 function json(response) {
-    //log(response.status + ' ' + response.statusText);
-    return response.json();
+
+    if(response.status == 200) {
+
+        return response.json();
+
+    } else {
+
+        log(response.status + ' ' + response.statusText);
+
+        return {
+            HTTP_STATUS: response.status,
+            HTTP_STATUS_TEXT: response.statusText,
+            errorTitle: "Error",
+            errorMsg: "Server responded with HTTP satus:<br>" + response.status + " " + response.statusText,
+            isError: true
+        };
+
+    }
+
 }
 
-function fetchNotes(key) {
+function fetchNotes() {
 
     fetch(api_url+'?api_key='+API_KEY+'&action=list', {
         method: 'get',
         headers: {
             "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
         },
-        //body: "?api_key="+key+"&action=fetchNotes",
         credentials: 'include'
     })
     .then(json)
     .then(function (data) {
         //log('Request succeeded with JSON response', data);
+        log('Data: ' + data);
+        if(!data.error && data.notes) {
+            for(let i = 0; i < data.notes.length; i++) {
 
-        for(let i = 0; i < data.notes.length; i++) {
+                let article = document.createElement('article');
+                let h3 = document.createElement('h3');
+                let p = document.createElement('p');
+                let span = document.createElement('span');
+                h3.innerHTML = data.notes[i].title;
+                p.innerHTML = data.notes[i].body;
+                span.innerHTML = data.notes[i].due;
+                article.appendChild(h3);
+                article.appendChild(p);
+                article.appendChild(span);
 
-            let article = document.createElement('article');
-            let h3 = document.createElement('h3');
-            let p = document.createElement('p');
-            let span = document.createElement('span');
-            h3.innerHTML = data.notes[i].title;
-            p.innerHTML = data.notes[i].body;
-            span.innerHTML = data.notes[i].due;
-            article.appendChild(h3);
-            article.appendChild(p);
-            article.appendChild(span);
-
-            article.setAttribute("title", data.notes[i].title);
-            article.setAttribute("note", data.notes[i].body);
-            article.setAttribute("due", data.notes[i].due);
-            article.setAttribute("note-id", data.notes[i].id);
-            article.setAttribute("created", data.notes[i].created);
-            article.setAttribute("importance", data.notes[i].importance);
-    
-            list.appendChild(article);
-            showHint();
+                article.setAttribute("title", data.notes[i].title);
+                article.setAttribute("note", data.notes[i].body);
+                article.setAttribute("due", data.notes[i].due);
+                article.setAttribute("note-id", data.notes[i].id);
+                article.setAttribute("created", data.notes[i].created);
+                article.setAttribute("importance", data.notes[i].importance);
+        
+                list.appendChild(article);
+                showHint();
+            }
+        } else if(data.isError) {
+            showHint(data.errorTitle, data.errorMsg, true);
         }
     })
     .catch(function (error) {
         console.log('Request failed', error);
+        showHint('Error', error, true);
     });
 
 }

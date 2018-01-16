@@ -28,15 +28,11 @@
 
             <!-- Scoll list -->
             <section id="list">
-                <div id="add-note-hint">
-                    <h3>Add a note</h3>
-                    <p>Click the <i class="fa fa-plus" aria-hidden="true"></i> icon at the top of the screen or via the sidemenu.</p>
+                <div id="hint">
+                    <h3 id="hint-title">Add a note</h3>
+                    <p id="hint-body">Click the <i class="fa fa-plus" aria-hidden="true"></i> icon at the top of the screen or via the sidemenu.</p>
                 </div>
-                <article title="Test note" note="It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess" due="2018-01-30" note-id="-1" created="2018-01-15" importance="50">
-                    <h3>Test note</h3>
-                    <p>It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess It's a mess</p>
-                    <span>2018-01-31</span>
-                </article>
+                <!-- Notes! -->
             </section>
 
         </main>
@@ -113,8 +109,11 @@
                     <label for="edit-note-importance">Importance</label>
                     <input type="number" name="edit-note-importance" id="edit-note-importance" min="0" value="0" max="100">
                     <input type="text" name="edit-note-id" id="edit-note-id" class="hidden">
-                    <input type="submit" name="edit-note-submit" value="Update note" style="display:block;margin:15px auto;">
                 </form>
+                <div class="buttons">
+                    <button class="clear" id="edit-mark-done">Mark as done</button>
+                    <input type="submit" name="edit-note-submit" value="Update note">
+                </div>
             </div>
         </div>
 
