@@ -182,14 +182,31 @@ window.onload = () => {
 
 }
 
+// Show 'Add Note hint' when there are no articles
+function showHint() {
+    let cn = list.childNodes;
+    for(let i = 0; i < cn.length; i++) {
+        if(cn[i].nodeName == 'ARTICLE') {
+            if(cn[i].style.display != 'none') {
+                document.getElementById('add-note-hint').style.display = 'none';
+                break;
+            }
+        } else {
+            document.getElementById('add-note-hint').style.display = 'block';
+        }
+    }
+}
+
 // Handle the swipeUp action.
 function swipeUp(article) {
 
-    article.style.opacity = '0';
-    setTimeout(() => {
-        article.style.display = 'none';
-    }, 300);
-
+    if(article) {
+        article.style.opacity = '0';
+        setTimeout(() => {
+            article.style.display = 'none';
+            showHint();
+        }, 300);
+    }
 
 }
 
@@ -230,6 +247,7 @@ function fetchNotes(key) {
             article.setAttribute("importance", data.notes[i].importance);
     
             list.appendChild(article);
+            showHint();
         }
     })
     .catch(function (error) {

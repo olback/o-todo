@@ -160,7 +160,7 @@ section {
     padding-top: 0;
 }
 
-article {
+article, #add-note-hint {
     display: inline-block;
     height: 360px;
     width: 250px;
@@ -431,6 +431,15 @@ div.modal > div.inner > h1 {
     margin: auto;
     text-align: center;
     margin-top: 10px;
+}
+
+#add-note-hint {
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    text-align: center;
+    white-space: normal;
+    margin: auto;
 }
 
 ::-webkit-scrollbar {
