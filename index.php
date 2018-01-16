@@ -1,3 +1,19 @@
+<?php
+
+    // setcookie('api_key', 'heeyo', time() + (30 * 24 * 60 * 60), '/');
+    // setcookie('username', 'heeyo', time() + (30 * 24 * 60 * 60), '/');
+
+    require(__DIR__.'/api/init.php');
+
+    if(isset($_COOKIE['api_key'])) {
+        
+
+    } else {
+        header('Location: login.php');
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>

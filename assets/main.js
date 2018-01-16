@@ -6,9 +6,13 @@
  *
  */
 
-const api_url = 'assets/test/sample-list.json';
-//const api_url = 'api/api.php';
-const API_KEY = ''; // Get this from cooke?
+const API_KEY = '0UagHLS6KdTJ2yQ105K9'; // Get this from cooke?
+
+let api_url = 'api/api.php';
+
+if(window.location.hostname == 'olback.github.io' || window.location.hostname == 'demo-o-todo.olback.net') {
+    api_url = 'assets/test/sample-list.json';
+}
 
 const log = console.log;
 const current_year = new Date().getFullYear();
@@ -131,6 +135,10 @@ window.onload = () => {
         openModal('admin');
     }
 
+    document.getElementById('logout-button').onclick = () => {
+        window.location = 'login.php';
+    }
+
     function openModal(m) {
 
         side_menu.style.width = 0;
@@ -185,7 +193,7 @@ window.onload = () => {
 
 }
 
-// Show 'Add Note hint' when there are no articles
+// Show hint when there are no articles
 function showHint(title, body, isError) {
     let cn = list.childNodes;
     for(let i = 0; i < cn.length; i++) {
@@ -200,7 +208,7 @@ function showHint(title, body, isError) {
                 document.getElementById('hint-title').innerHTML = title;
                 document.getElementById('hint-body').innerHTML = body;
                 if(isError) {
-                    document.getElementById('hint-title').style.color = 'tomato';
+                    document.getElementById('hint-title').style.color = 'red';
                 } else {
                     document.getElementById('hint-title').style.color = 'initial';
                 }
@@ -257,7 +265,6 @@ function fetchNotes() {
     .then(json)
     .then(function (data) {
         //log('Request succeeded with JSON response', data);
-        log('Data: ' + data);
         if(!data.error && data.notes) {
             for(let i = 0; i < data.notes.length; i++) {
 
