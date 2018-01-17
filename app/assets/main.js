@@ -2,17 +2,9 @@
  *  o-todo
  *  https://github.com/olback/o-todo
  *
- *  This also needs a re-write :3
- *
  */
 
-const API_KEY = '0UagHLS6KdTJ2yQ105K9'; // Get this from cooke?
-
-let api_url = 'api/api.php';
-
-if(window.location.hostname == 'olback.github.io' || window.location.hostname == 'demo-o-todo.olback.net') {
-    api_url = 'assets/test/sample-list.json';
-}
+const api_url = 'api/api.php';
 
 const log = console.log;
 const current_year = new Date().getFullYear();
@@ -131,9 +123,9 @@ window.onload = () => {
         openModal('profile');
     }
 
-    document.getElementById('admin-button').onclick = () => {
-        openModal('admin');
-    }
+    // document.getElementById('admin-button').onclick = () => {
+    //     openModal('admin');
+    // }
 
     document.getElementById('logout-button').onclick = () => {
         window.location = 'login.php';
@@ -191,6 +183,38 @@ window.onload = () => {
         window.location.reload();
     }
 
+    document.getElementById('new-note-submit').onclick = () => {
+
+        let body = 'new-note=1&new-note-title='+document.getElementById('new-note-title').value+'&new-note-body='+document.getElementById('new-note-body').value+'&new-note-due-date='+document.getElementById('new-note-due-date').value+'&new-note-importance='+document.getElementById('new-note-importance').value+'&new-note-create-date='+document.getElementById('new-note-create-date').value;
+
+        fetch(api_url, {
+            method: 'post',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            credentials: 'include',
+            body: body
+        })
+        .then(json)
+        .then(function (data) {
+            //log('Request succeeded with JSON response', data);
+            if(!data.error) {
+                
+                window.location.reload();
+    
+            } else if(data.error) {
+                
+                document.getElementById('new-note-status').innerHTML = 'Failed to add note to database.';
+    
+            }
+        })
+        .catch(function (error) {
+            console.log('Request failed', error);
+            showHint('Error', error, true);
+        });
+    
+    }
+
 }
 
 // Show hint when there are no articles
@@ -246,7 +270,7 @@ function json(response) {
             HTTP_STATUS_TEXT: response.statusText,
             errorTitle: "Error",
             errorMsg: "Server responded with HTTP satus:<br>" + response.status + " " + response.statusText,
-            isError: true
+            error: true
         };
 
     }
@@ -255,7 +279,7 @@ function json(response) {
 
 function fetchNotes() {
 
-    fetch(api_url+'?api_key='+API_KEY+'&action=list', {
+    fetch(api_url+'?action=list', {
         method: 'get',
         headers: {
             "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -289,7 +313,7 @@ function fetchNotes() {
                 list.appendChild(article);
                 showHint();
             }
-        } else if(data.isError) {
+        } else if(data.error) {
             showHint(data.errorTitle, data.errorMsg, true);
         }
     })

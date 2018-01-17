@@ -1,15 +1,10 @@
 <?php
 
-    // setcookie('api_key', 'heeyo', time() + (30 * 24 * 60 * 60), '/');
-    // setcookie('username', 'heeyo', time() + (30 * 24 * 60 * 60), '/');
-
-    require(__DIR__.'/api/init.php');
-
-    if(isset($_COOKIE['api_key'])) {
+    require(__DIR__.'/api/functions.php');
         
-
-    } else {
+    if(!loggedIn()) {
         header('Location: login.php');
+        die();
     }
 
 ?>
@@ -17,14 +12,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Demo | o-todo</title>
+        <title><?php echo $_COOKIE['username']; ?> | o-todo</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffcc00" />
         <meta name="mobile-web-app-capable" content="yes">
-        <meta HTTP-EQUIV="Pragma" CONTENT="no-cache" />
-        <meta HTTP-EQUIV="Expires" CONTENT="-1" />
-        <link href="assets/css/main.css" rel="stylesheet" />
+        <link href="assets/css/main.min.css" rel="stylesheet" />
         <link href="assets/css/font-awesome.min.css" rel="stylesheet"/>
         <link rel="shortcut icon" href="assets/icons/icon-96.png" />
         <link rel="manifest" href="manifest.json" />
@@ -59,7 +52,7 @@
             <div class="top">
                 <figure>
                     <img src="assets/images/profile_img.png" alt="Profile image"/>
-                    <figcaption>Demo</figcaption>
+                    <figcaption><?php echo $_COOKIE['username']; ?></figcaption>
                 </figure>
             </div>
 
@@ -67,7 +60,7 @@
                 <li class="add-note-button"><i class="fa fa-plus" aria-hidden="true"></i> <span>Add note</span></li>
                 <li id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i> <span>Reload</span></li>
                 <li id="profile-button"><i class="fa fa-user-circle-o" aria-hidden="true"></i> <span>Profile</span></li>
-                <li id="admin-button"><i class="fa fa-wrench" aria-hidden="true"></i> <span>Admin</span></li>
+                <!-- (yet to be implemented) <li id="admin-button"><i class="fa fa-wrench" aria-hidden="true"></i> <span>Admin</span></li>-->
                 <li id="logout-button"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log out</span></li>
             </ul>
 
@@ -95,17 +88,18 @@
             <div class="inner">
                 <i class="fa fa-close close-modal" aria-hidden="true"></i>
                 <h1>Add note</h1><br>
-                <form action="" method="POST">
-                    <label for="input-title">Title</label>
-                    <input type="text" name="note-title" id="note-title">
-                    <label for="note-note">Note</label>
-                    <textarea name="note-note" id="note-note" style="height: 80px;"></textarea>
-                    <label for="note-due-date">Due date</label>
-                    <input type="date" name="note-due-date" id="note-due-date">
-                    <label for="note-importance">Importance</label>
-                    <input type="number" name="note-importance" id="note-importance" min="0" value="0" max="100">
+                <form>
+                    <label for="new-note-title">Title</label>
+                    <input type="text" id="new-note-title">
+                    <label for="new-note-body">Note</label>
+                    <textarea id="new-note-body" style="height: 80px;"></textarea>
+                    <label for="new-note-due-date">Due date</label>
+                    <input type="date" id="new-note-due-date">
+                    <label for="new-note-importance">Importance</label>
+                    <input type="number" id="new-note-importance" min="0" value="0" max="100">
                     <input type="date" id="new-note-create-date" class="hidden" />
-                    <input type="submit" name="note-submit" value="Add note" style="display:block;margin:15px auto;">
+                    <input type="button" id="new-note-submit" value="Add note" style="display:block;margin:15px auto;">
+                    <p id="new-note-status"></p>
                 </form>
             </div>
         </div>
@@ -115,7 +109,7 @@
             <div class="inner">
                 <i class="fa fa-close close-modal" aria-hidden="true"></i>
                 <h1>Edit note</h1><br>
-                <form action="" method="POST">
+                <form>
                     <label for="edit-note-title">Title</label>
                     <input type="text" name="edit-note-title" id="edit-note-title">
                     <label for="edit-note-note">Note</label>
@@ -125,11 +119,11 @@
                     <label for="edit-note-importance">Importance</label>
                     <input type="number" name="edit-note-importance" id="edit-note-importance" min="0" value="0" max="100">
                     <input type="text" name="edit-note-id" id="edit-note-id" class="hidden">
+                    <div class="buttons">
+                        <button disabled="disabled" class="clear" id="edit-mark-done">Mark as done</button>
+                        <input disabled="disabled" type="button" name="edit-note-submit" value="Update note">
+                    </div>
                 </form>
-                <div class="buttons">
-                    <button class="clear" id="edit-mark-done">Mark as done</button>
-                    <input type="submit" name="edit-note-submit" value="Update note">
-                </div>
             </div>
         </div>
 
@@ -140,27 +134,26 @@
                 <h1>Profile</h1><br>
                 <figure>
                     <img src="assets/images/profile_img.png" alt="Profile image"/>
-                    <figcaption>Demo</figcaption>
+                    <figcaption><?php echo $_COOKIE['username']; ?></figcaption>
                 </figure>
-                <form action="" method="post">
+                <form action="" method="put">
                     <label for="api-key">API Key</label>
-                    <input type="text" id="api-key" readonly="readonly" value="0UagHLS6KdTJ2yQ105K9">
-
+                    <input type="text" id="api-key" readonly="readonly" value="<?php echo $_COOKIE['api_key']; ?>">
                     <div class="buttons">
-                        <button class="clear">Reset API Key</button>
-                        <input type="submit" value="Save" style="width: 100px;">
+                        <button class="clear" disabled="disabled">Reset API Key</button>
+                        <!--<input type="submit" value="Save" style="width: 100px;">-->
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- App settings -->
-        <div class="modal" id="admin">
+        <!-- App settings (yet to be implemented)-->
+        <!--<div class="modal" id="admin">
             <div class="inner">
                 <i class="fa fa-close close-modal" aria-hidden="true"></i>
                 <h1>Admin</h1>
             </div>
-        </div>
+        </div>-->
 
     </body>
 </html>

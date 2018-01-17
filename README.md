@@ -9,6 +9,9 @@ First of all, you need to host this one on your own. Second, it's written from s
 ### Why should i use this instead of <insert other note taking app here>?
 By using some else's note taking app, you rely on their security and that they will keep their service online for as long as you need it. 
 
+### Install
+To host this, you need a web server (nginx, apache, whatever), PHP and MySQL. PHPMyAdmin makes your life way easier as well. Import the `o-todo.sql` and create a new db user. Make the `app` folder the web-root.
+
 ### Compatibility
 This application uses ES6 and will not work in old/shitty browsers. (IE)
 

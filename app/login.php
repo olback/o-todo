@@ -2,10 +2,50 @@
 
     // Log out the user
     session_start();
+
+    // Sign out the user when navigating to this page.
     setcookie('api_key', NULL);
     setcookie('username', NULL);
 
-    require(__DIR__.'/api/init.php');
+    if(isset($_POST['sign-in'])) {
+
+        require(__DIR__.'/api/initdb.php');
+
+        $stmt = $con->prepare("SELECT `username`, `password`, `api_key` FROM `users` WHERE `username`=?");
+        $stmt->bind_param('s', $_POST['username']);
+        $stmt->execute();
+        
+        $data = $stmt->get_result();
+
+        if($stmt->error) {
+            $_SESSION['error'] = 'Could not log in. Try again.';
+        }
+
+        if($data->num_rows == 1) {
+
+            while($row_data = $data->fetch_assoc()) {
+                // Action to do
+
+                if(password_verify($_POST['password'], $row_data['password'])) {
+                    
+                    setcookie('api_key', $row_data['api_key'], time() + (30 * 24 * 60 * 60), '/');
+                    setcookie('username', $row_data['username'], time() + (30 * 24 * 60 * 60), '/');
+                    header('Location: index.php');
+
+                } else {
+                    $_SESSION['error'] = 'Username or password incorrect.';        
+                }
+                
+            }
+          
+        } else {
+            $_SESSION['error'] = 'Username or password incorrect.';
+        }
+
+        $stmt->close();
+        $con->close();
+
+    }
 
     if(isset($_POST['sign-up'])) {
 
@@ -46,6 +86,9 @@
             'cost' => 12,
         );
 
+        require(__DIR__.'/api/initdb.php');
+        require(__DIR__.'/api/functions.php');
+
         $username = $_POST['new-username'];
         $password_hash = password_hash($_POST['new-password'], PASSWORD_BCRYPT, $hash_options);
         $api_key = generateRandomString(25);
@@ -58,20 +101,18 @@
         if($stmt->error) {
             $_SESSION['error'] = 'Account creation failed. Username might already be taken.';    
             $stmt->close();
+            $con->close();
             header('Location: login.php?new-acc=true');
             die();
         }
 
         $stmt->close();
-
+        $con->close();
         $_SESSION['success'] = 'Account created!';
 
     }
 
-    $con->close();
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -81,7 +122,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffcc00" />
         <meta name="mobile-web-app-capable" content="no">
-        <link href="assets/css/main.css" rel="stylesheet" />
+        <link href="assets/css/main.min.css" rel="stylesheet" />
         <link href="assets/css/font-awesome.min.css" rel="stylesheet"/>
         <link rel="shortcut icon" href="assets/icons/icon-96.png" />
         <style>
@@ -97,7 +138,6 @@
                 outline: none;
                 margin-bottom: 10px;
                 transition: 0.2s;
-                
             }
 
             input:focus {
@@ -132,6 +172,10 @@
                 font-size: 1em;
             }
 
+            form {
+                padding-bottom: 10px;
+            }
+
             p.error {
                 display: block;
                 margin: auto;
@@ -163,13 +207,14 @@
             <h1>o-todo Login</h1>
 
             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                <input type="text" id="username" placeholder="Username" required="required" />
-                <input type="password" id="password" placeholder="Password" required="required" />
+                <input type="text" name="username" id="username" placeholder="Username" required="required" />
+                <input type="password" name="password" id="password" placeholder="Password" required="required" />
                 <button type="button" id="create-account">Create account</button>
-                <input type="submit" value="Login">
+                <input type="submit" value="Login" name="sign-in" />
                 <!--<button type="button" id="reset-password">Forgot your password?</button>-->
             </form>
             <p class="success"><?php if(isset($_SESSION['success'])) { echo $_SESSION['success']; } ?></p>
+            <p class="error"><?php if(isset($_SESSION['error'])) { echo $_SESSION['error']; } ?></p>
 
         </main>
 

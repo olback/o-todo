@@ -297,7 +297,6 @@ noscript > div.container > div.inner > p {
 }
 
 div.modal {
-    /* Add modal css */
     display: none;
     top: 0;
     left: 0;
@@ -327,7 +326,7 @@ div.modal > div.inner {
     z-index: 90;
 }
 
-div.modal > div.inner > form {
+form {
     margin: auto;
     margin-top: 40px;
     padding-bottom: 5%;
@@ -357,7 +356,7 @@ input, textarea {
     font-size: 1.2em;
 }
 
-button, input[type=submit] {
+button, input[type=button], input[type=submit] {
     background-color: #4CAF50;
     color: #fff;
     margin: 15px 15px;
@@ -372,7 +371,7 @@ button, input[type=submit] {
     cursor: pointer;
 }
 
-button:hover, input[type=submit]:hover {
+button:hover, input[type=button]:hover, input[type=submit]:hover {
     background-color: rgba(76, 176, 80, 0.8);
 }
 
@@ -440,6 +439,12 @@ div.modal > div.inner > h1 {
     text-align: center;
     white-space: normal;
     margin: auto;
+}
+
+#new-note-status {
+    display: block;
+    margin: auto;
+    text-align: center;
 }
 
 ::-webkit-scrollbar {
