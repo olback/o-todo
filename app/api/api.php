@@ -1,9 +1,12 @@
 <?php
 
+    // Helper functions
     require(__DIR__.'/functions.php');
 
+    // Set content type to json
     header('Content-Type: application/json');
 
+    // Check if a user is logged in
     if(!loggedIn()) {
         $error = ['error' => true, 'code' => 401, 'message' => 'Unauthorized'];
         http_response_code($error['code']);

@@ -9,10 +9,12 @@ const api_url = 'api/api.php';
 const log = console.log;
 const current_year = new Date().getFullYear();
 
+let side_menu;
+
 window.onload = () => {
 
     const year_elements = document.getElementsByClassName('current-year');
-    const side_menu = document.getElementById('side-menu');
+    side_menu = document.getElementById('side-menu');
     const list = document.getElementById('list');
     const body = document.getElementsByTagName('body');
 
@@ -131,12 +133,66 @@ window.onload = () => {
         window.location = 'login.php';
     }
 
-    function openModal(m) {
+    // Click to copy API Key
+    const api_key = document.getElementById('api-key');
+    api_key.onclick = () => {
+        api_key.select();
+        document.execCommand('copy');
+    }
 
+
+    document.getElementById('refresh').onclick = () => {
+        //window.location.reload();
+        fetchNotes();
         side_menu.style.width = 0;
-        document.getElementById(m).style.display = 'block';
+    }
+
+    document.getElementById('new-note-submit').onclick = () => {
+
+        let body = 'new-note=1&new-note-title='+document.getElementById('new-note-title').value+'&new-note-body='+document.getElementById('new-note-body').value+'&new-note-due-date='+document.getElementById('new-note-due-date').value+'&new-note-importance='+document.getElementById('new-note-importance').value+'&new-note-create-date='+document.getElementById('new-note-create-date').value;
+
+        fetch(api_url, {
+            method: 'post',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            credentials: 'include',
+            body: body
+        })
+        .then(json)
+        .then(function (data) {
+            //log('Request succeeded with JSON response', data);
+            if(!data.error) {
+                
+                //window.location.reload();
+                fetchNotes();
+                document.getElementById('add-note').style.display = 'none';
+    
+            } else if(data.error) {
+                
+                document.getElementById('new-note-status').innerHTML = 'Failed to add note to database.';
+    
+            }
+        })
+        .catch(function (error) {
+            console.log('Request failed', error);
+            showHint('Error', error, true);
+        });
     
     }
+
+    fetchNotes();
+
+}
+
+function openModal(m) {
+
+    side_menu.style.width = 0;
+    document.getElementById(m).style.display = 'block';
+
+}
+
+function handleNoteActions() {
 
     const articles = document.getElementsByTagName('article');
 
@@ -157,62 +213,22 @@ window.onload = () => {
 
         let a_pos_y;
         articles[i].ontouchstart = (e) => {
+            
             a_pos_y = e.touches[0].clientY;
+
         }
 
         articles[i].ontouchmove = (e) => {
+
             let diff = a_pos_y - e.touches[0].clientY;
 
-            if(diff > 150) {
+            if(diff > 125) {
+
                 noteDone(articles[i]);
-                // TODO: Remove note from database.
+
             }
         }
 
-    }
-
-    // Click to copy API Key
-    const api_key = document.getElementById('api-key');
-    api_key.onclick = () => {
-        api_key.select();
-        document.execCommand('copy');
-    }
-
-
-    document.getElementById('refresh').onclick = () => {
-        window.location.reload();
-    }
-
-    document.getElementById('new-note-submit').onclick = () => {
-
-        let body = 'new-note=1&new-note-title='+document.getElementById('new-note-title').value+'&new-note-body='+document.getElementById('new-note-body').value+'&new-note-due-date='+document.getElementById('new-note-due-date').value+'&new-note-importance='+document.getElementById('new-note-importance').value+'&new-note-create-date='+document.getElementById('new-note-create-date').value;
-
-        fetch(api_url, {
-            method: 'post',
-            headers: {
-                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-            },
-            credentials: 'include',
-            body: body
-        })
-        .then(json)
-        .then(function (data) {
-            //log('Request succeeded with JSON response', data);
-            if(!data.error) {
-                
-                window.location.reload();
-    
-            } else if(data.error) {
-                
-                document.getElementById('new-note-status').innerHTML = 'Failed to add note to database.';
-    
-            }
-        })
-        .catch(function (error) {
-            console.log('Request failed', error);
-            showHint('Error', error, true);
-        });
-    
     }
 
 }
@@ -279,6 +295,12 @@ function json(response) {
 
 function fetchNotes() {
 
+    // First remove all existing notes.
+    let oldArticles = document.getElementsByTagName('article');
+    for(let i = oldArticles.length-1; i >= 0; i--) {
+        oldArticles[i].remove();
+    }
+
     fetch(api_url+'?action=list', {
         method: 'get',
         headers: {
@@ -287,9 +309,11 @@ function fetchNotes() {
         credentials: 'include'
     })
     .then(json)
-    .then(function (data) {
+    .then(function(data) {
+
         //log('Request succeeded with JSON response', data);
         if(!data.error && data.notes) {
+
             for(let i = 0; i < data.notes.length; i++) {
 
                 let article = document.createElement('article');
@@ -311,11 +335,16 @@ function fetchNotes() {
                 article.setAttribute("importance", data.notes[i].importance);
         
                 list.appendChild(article);
+                handleNoteActions();
                 showHint();
             }
+
         } else if(data.error) {
+
             showHint(data.errorTitle, data.errorMsg, true);
+
         }
+
     })
     .catch(function (error) {
         console.log('Request failed', error);
@@ -336,5 +365,3 @@ if ('serviceWorker' in navigator) {
     console.error('Service-workers not supported.');
 
 }
-
-fetchNotes();

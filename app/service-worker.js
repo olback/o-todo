@@ -10,7 +10,8 @@
 // resources to be cached again.
 const CACHE_VERSION = 1;
 let CURRENT_CACHES = {
-  offline: 'offline-v' + CACHE_VERSION
+  offline: 'offline-v' + CACHE_VERSION,
+  assets: 'assets-v' + CACHE_VERSION
 };
 const OFFLINE_URL = 'assets/offline.html';
 
@@ -35,7 +36,24 @@ self.addEventListener('install', event => {
         return cache.put(OFFLINE_URL, response);
       });
     })
-  );
+  )
+  event.waitUntil(
+    caches.open(CURRENT_CACHES.assets).then(function(cache) {
+      return cache.addAll(
+        [
+          'assets/css/font-awesome.min.css',
+          'assets/css/main.min.css',
+          'assets/fonts/CabinSketch-Regular.ttf',
+          'assets/fonts/fontawesome-webfont.ttf',
+          'assets/fonts/Roboto-Regular.ttf',
+          'assets/images/profile_img.png',
+          'assets/images/sidenav-bg.png',
+          'assets/main.js',
+          'assets/icons/icon-96.png'
+        ]
+      );
+    })
+  )
 });
 
 self.addEventListener('activate', event => {
@@ -71,4 +89,14 @@ self.addEventListener('fetch', event => {
       })
     );
   }
+});
+
+self.addEventListener('fetch', function(event) {
+    if(!event.request.headers.get('accept').includes('text/html')) {
+      event.respondWith(
+        caches.match(event.request).then(function(response) {
+          return response || fetch(event.request);
+        })
+      );
+    }
 });
