@@ -36,8 +36,9 @@ nav {
     z-index: 10;
 }
 
-nav > h1 {
-    padding: 0;
+nav > div.header, nav > h1 {
+    padding-top: 17px;
+    padding-bottom: 14px;
     margin-left: 20px;
     font-size: 20px;
     line-height: 1.4em;
@@ -247,6 +248,37 @@ article > span {
     padding-left: 10px;
 }
 
+#timed-status {
+    position: fixed;
+    bottom: -40px;
+    width: 100%;
+    /* height: 40px; */
+    background-color: transparent;
+    z-index: 50;
+    vertical-align: middle;
+    padding: 12px;
+    font-size: 16px;
+    line-height: 1em;
+    transition: 0.3s;
+    color: #fff;
+}
+
+#timed-status-bar {
+    height: 40px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 51;
+    display: block;
+    z-index: -1;
+    bottom: 0;
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    left: 0;
+    transition: width 4s;
+    transition-timing-function: linear;
+}
+
 noscript {
     display: block;
     position: fixed;
@@ -341,38 +373,53 @@ label {
     width: 92%;
     margin: auto;
     margin-top: 10px;
-    font-size: 1.7em;
+    font-size: 1em;
     padding: 0.2em 0;
 }
 
-input, textarea {
-    display: block;
-    max-width: 700px;
-    width: 90%;
-    margin: auto;
-    border: 1px solid gray;
-    border-radius: 5px;
-    padding: 7px;
-    font-size: 1.2em;
+input:focus {
+    border-color: #333;
 }
 
-button, input[type=button], input[type=submit] {
-    background-color: #4CAF50;
-    color: #fff;
-    margin: 15px 15px;
+button, input[type=button], input[type=submit], #create-account, #reset-password {
     width: max-content;
-    transition: 0.2s;
-    padding: 10px;
-    font-size: 1.2em;
-    border-radius: 5px;
     border: none;
-    display: inline-block;
-    text-align: center;
+    background-color: transparent;
+    border-radius: 0;
+    color: #333;
+    height: 50px;
+    transition: 0.2s;
+    padding: 0 20px;
+    outline: none;
+}
+
+button:hover, input[type=button]:hover, input[type=submit]:hover, #create-account:hover, #reset-password:hover {
+    background-color: rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
-button:hover, input[type=button]:hover, input[type=submit]:hover {
-    background-color: rgba(76, 176, 80, 0.8);
+#create-account, #reset-password {
+    font-size: 12px;
+}
+
+#reset-password {
+    display: block;
+    margin: auto;
+}
+
+input, textarea {
+    font-size: 1.4em;
+    margin: auto;
+    width: 90%;
+    max-width: 700px;
+    display: block;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #888;
+    outline: none;
+    margin-bottom: 10px;
+    transition: 0.2s;
 }
 
 .buttons {
@@ -445,6 +492,25 @@ div.modal > div.inner > h1 {
     display: block;
     margin: auto;
     text-align: center;
+    margin-top: 15px;
+}
+
+
+p.error {
+    display: block;
+    margin: auto;
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
+
+p.success {
+    display: block;
+    margin: auto;
+    color: green;
+    text-align: center;
+    margin-top: 10px;
+    z-index: 100;
 }
 
 ::-webkit-scrollbar {

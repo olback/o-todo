@@ -2,7 +2,7 @@
 
     // Functions...?
 
-    function generateRandomString($length = 10) {
+    function generateRandomString($length = 25) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -11,7 +11,6 @@
         }
         return $randomString;
     }
-
 
     function loggedIn() {
 
@@ -52,7 +51,7 @@
 
     function badRequest() {
         // If no action/method is specified, return with 'Bad request'.
-        $error = ['error' => true, 'code' => 400, 'message' => 'Bad request'];
+        $error = ['error' => true, 'code' => 400, 'message' => 'Bad request', 'method' => $_SERVER['REQUEST_METHOD']];
         http_response_code($error['code']);
         die(json_encode($error));
     }

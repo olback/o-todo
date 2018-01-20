@@ -27,7 +27,9 @@
 
         <!-- Top navigation -->
         <nav>
-            <h1 id="menu-button" class="nav-button"><i class="fa fa-bars" aria-hidden="true"></i></h1> <h1 class="title">o-ToDo</h1> <h1 class="nav-button add-note-button"><i class="fa fa-plus" aria-hidden="true"></i></h1>
+            <div id="menu-button" class="header nav-button"><i class="fa fa-bars" aria-hidden="true"></i></div>
+            <h1 class="title">o-ToDo</h1>
+            <div class="header nav-button add-note-button"><i class="fa fa-plus" aria-hidden="true"></i></div>
         </nav>
 
         <!-- Main section -->
@@ -72,6 +74,11 @@
 
         </aside>
 
+        <div id="timed-status">
+            <span id="timed-status-text">Hello gais</span>
+        </div>
+        <div id="timed-status-bar"></div>
+
         <!-- Displayed when JavaScript is disabled. -->
         <noscript>
             <div class="container">
@@ -81,7 +88,6 @@
                 </div>
             </div>
         </noscript>
-
 
         <!-- Add note-->
         <div class="modal" id="add-note">
@@ -98,7 +104,7 @@
                     <label for="new-note-importance">Importance</label>
                     <input type="number" id="new-note-importance" min="0" value="0" max="100">
                     <input type="date" id="new-note-create-date" class="hidden" />
-                    <input type="button" id="new-note-submit" value="Add note" style="display:block;margin:15px auto;">
+                    <button type="button" class="clear" id="new-note-submit" style="margin:auto;display:block;">Add note</button>
                     <p id="new-note-status"></p>
                 </form>
             </div>
@@ -120,8 +126,8 @@
                     <input type="number" name="edit-note-importance" id="edit-note-importance" min="0" value="0" max="100">
                     <input type="text" name="edit-note-id" id="edit-note-id" class="hidden">
                     <div class="buttons">
-                        <button disabled="disabled" class="clear" id="edit-mark-done">Mark as done</button>
-                        <input disabled="disabled" type="button" name="edit-note-submit" value="Update note">
+                        <button class="clear" type="button" id="edit-mark-done">Mark as done</button>
+                        <!--<input disabled="disabled" type="button" name="edit-note-submit" value="Update note">-->
                     </div>
                 </form>
             </div>
@@ -136,11 +142,11 @@
                     <img src="assets/images/profile_img.png" alt="Profile image"/>
                     <figcaption><?php echo $_COOKIE['username']; ?></figcaption>
                 </figure>
-                <form action="" method="put">
+                <form>
                     <label for="api-key">API Key</label>
                     <input type="text" id="api-key" readonly="readonly" value="<?php echo $_COOKIE['api_key']; ?>">
                     <div class="buttons">
-                        <button class="clear" disabled="disabled">Reset API Key</button>
+                        <button type="button" class="clear">Reset API Key</button>
                         <!--<input type="submit" value="Save" style="width: 100px;">-->
                     </div>
                 </form>

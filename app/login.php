@@ -24,7 +24,6 @@
         if($data->num_rows == 1) {
 
             while($row_data = $data->fetch_assoc()) {
-                // Action to do
 
                 if(password_verify($_POST['password'], $row_data['password'])) {
                     
@@ -33,13 +32,17 @@
                     header('Location: index.php');
 
                 } else {
+
                     $_SESSION['error'] = 'Username or password incorrect.';        
+
                 }
                 
             }
           
         } else {
+
             $_SESSION['error'] = 'Username or password incorrect.';
+
         }
 
         $stmt->close();
@@ -128,69 +131,7 @@
         <style>
             form {
                 margin-top: 20px;
-            }
-
-            input {
-                background-color: transparent;
-                border: none;
-                border-radius: 0;
-                border-bottom: 1px solid #888;
-                outline: none;
-                margin-bottom: 10px;
-                transition: 0.2s;
-            }
-
-            input:focus {
-                border-color: #333;
-            }
-
-            input[type=submit], #create-account, #reset-password {
-                width: max-content;
-                border: none;
-                background-color: transparent;
-                border-radius: 0;
-                color: #333;
-                height: 50px;
-                transition: 0.2s;
-                padding: 0 20px;
-            }
-
-            input[type=submit]:hover, #create-account:hover, #reset-password:hover {
-                background-color: rgba(0, 0, 0, 0.1);
-            }
-
-            #create-account, #reset-password {
-                font-size: 12px;
-            }
-
-            #reset-password {
-                display: block;
-                margin: auto;
-            }
-
-            label {
-                font-size: 1em;
-            }
-
-            form {
                 padding-bottom: 10px;
-            }
-
-            p.error {
-                display: block;
-                margin: auto;
-                color: red;
-                text-align: center;
-                margin-top: 10px;
-            }
-
-            p.success {
-                display: block;
-                margin: auto;
-                color: green;
-                text-align: center;
-                margin-top: 10px;
-                z-index: 100;
             }
         </style>
     </head>
@@ -210,8 +151,7 @@
                 <input type="text" name="username" id="username" placeholder="Username" required="required" />
                 <input type="password" name="password" id="password" placeholder="Password" required="required" />
                 <button type="button" id="create-account">Create account</button>
-                <input type="submit" value="Login" name="sign-in" />
-                <!--<button type="button" id="reset-password">Forgot your password?</button>-->
+                <button type="submit" name="sign-in" style="font-size: 1.4em">Login</button>
             </form>
             <p class="success"><?php if(isset($_SESSION['success'])) { echo $_SESSION['success']; } ?></p>
             <p class="error"><?php if(isset($_SESSION['error'])) { echo $_SESSION['error']; } ?></p>
