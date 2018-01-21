@@ -6,6 +6,9 @@
     // Set content type to json
     header('Content-Type: application/json');
 
+    // Get request method
+    $method = $_SERVER['REQUEST_METHOD'];
+
     // Check if a user is logged in. If not, return with HTTP Status code 401 Unauthorized.
     if(!loggedIn()) {
         $error = ['error' => true, 'code' => 401, 'message' => 'Unauthorized', 'method' => $method];
@@ -13,12 +16,9 @@
         die(json_encode($error));
     }
 
-    // Get request method
-    $method = $_SERVER['REQUEST_METHOD'];
-
-    if ($method === 'DELETE') {
+    if($method === 'DELETE') {
         parse_str(file_get_contents('php://input'), $_DELETE);
-    } elseif ($method === 'PUT') {
+    } elseif($method === 'PUT') {
         parse_str(file_get_contents('php://input'), $_PUT);
     }
 
@@ -79,11 +79,11 @@
     
             if(!$stmt->error && $stmt->affected_rows == 1) {
                 
-                $return = ['error' => false, 'code' => 200, 'message' => 'Success'];
+                $return = ['error' => false, 'code' => 200, 'message' => 'Success', 'method' => $method];
 
             } else {
 
-                $return = ['error' => true, 'code' => 200, 'message' => 'Unable to add note to database'];
+                $return = ['error' => true, 'code' => 200, 'message' => 'Unable to add note to database', 'method' => $method];
 
             }
     
@@ -112,11 +112,11 @@
 
         if(!$stmt->error && $stmt->affected_rows == 1) {
 
-            $return = ['error' => false, 'code' => 200, 'message' => 'Success. Removed note from database'];
+            $return = ['error' => false, 'code' => 200, 'message' => 'Success. Removed note from database', 'method' => $method];
 
         } else {
 
-            $return = ['error' => true, 'code' => 200, 'message' => 'Unable to remove note from database'];
+            $return = ['error' => true, 'code' => 200, 'message' => 'Unable to remove note from database', 'method' => $method];
 
         }
 

@@ -1,1 +1,9 @@
+# Site settings
+title: o-todo
+description: Self-hosted to-do list.
+show_downloads: true
 theme: jekyll-theme-architect
+
+# Social media
+twitter_username: MrOlback
+github_username: olback
