@@ -179,10 +179,12 @@
                         <!--<input type="submit" value="Save" style="width: 100px;">-->
                     </div>
                     <p class="reset-api-key">Clicking 'Reset API Key' will sign you out from every device.</p>
-                    <?php if(isset($_SESSION['error'])) {
-                        echo '<p style="text-align: center;">'.$_SESSION['error'].'</p>';
+                    <?php
+                        if(isset($_SESSION['error'])) {
+                            echo '<p style="text-align: center;">'.$_SESSION['error'].'</p>';
+                        }
                         session_destroy();
-                    } ?>
+                    ?>
                 </form>
             </div>
         </div>
