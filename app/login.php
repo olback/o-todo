@@ -1,7 +1,10 @@
 <?php
 
-    // Log out the user
-    session_start();
+    $settings = [
+        'allow-sign-up' => true, // Allow new users?
+        'captcha-private' => '', // If you want a reCaptcha when creating new accounts.
+        'captcha-public' => '' // Site key
+    ];
 
     // Sign out the user when navigating to this page.
     setcookie('api_key', NULL);
@@ -33,7 +36,7 @@
 
                 } else {
 
-                    $_SESSION['error'] = 'Username or password incorrect.';        
+                    header('Location: login.php?modal=yes&message=Username or password incorrect.&color=red');
 
                 }
                 
@@ -41,7 +44,7 @@
           
         } else {
 
-            $_SESSION['error'] = 'Username or password incorrect.';
+            header('Location: login.php?modal=yes&message=Username or password incorrect.&color=red');
 
         }
 
@@ -50,37 +53,32 @@
 
     }
 
-    if(isset($_POST['sign-up'])) {
+    function signUp() {
 
         // Validate username
         if(isset($_POST['new-username']) && trim($_POST['new-username']) == '' || empty($_POST['new-username']) || !isset($_POST['new-username'])) {
-            $_SESSION['error'] = 'Username cannot be blank.';
-            header('Location: login.php?new-acc=true');
+            header('Location: login.php?modal=yes&message=Username cannot be blank.&color=red');
             die();
         }
 
         if(strlen($_POST['new-username']) < 4 || strlen($_POST['new-username']) > 25) {
-            $_SESSION['error'] = 'Username must contain at least 4 characters and not be longer than 25.';
-            header('Location: login.php?new-acc=true');
+            header('Location: login.php?modal=yes&message=Username must contain at least 4 characters and not be longer than 25.&color=red');
             die();
         }
 
         if (!preg_match('/^[A-Za-z][A-Za-z0-9]{3,25}$/', $_POST['new-username'])) {
-            $_SESSION['error'] = 'Usernames may only contain a-zA-Z0-9_-.';
-            header('Location: login.php?new-acc=true');
+            header('Location: login.php?modal=yes&message=Usernames may only contain a-zA-Z0-9_-.&color=red');
             die();
         }
 
         // Validate passwords
-        if(strlen($_POST['new-password']) < 7 && strlen($_POST['new-password']) <= 1000) {
-            $_SESSION['error'] = 'Password must be between 8 and 1000 characters.';
-            header('Location: login.php?new-acc=true');
+        if(strlen($_POST['new-password']) < 8 && strlen($_POST['new-password']) <= 1000) {
+            header('Location: login.php?modal=yes&message=Password must be between 8 and 1000 characters.&color=red');
             die();
         }
         
         if($_POST['new-password'] != $_POST['repeat-password']) {
-            $_SESSION['error'] = 'Passwords does not match!';
-            header('Location: login.php?new-acc=true');
+            header('Location: login.php?modal=yes&message=Passwords do not match!&color=red');
             die();
         }
 
@@ -102,16 +100,38 @@
         $stmt->execute();
 
         if($stmt->error) {
-            $_SESSION['error'] = 'Account creation failed. Username might already be taken.';    
             $stmt->close();
             $con->close();
-            header('Location: login.php?new-acc=true');
+            header('Location: login.php?modal=yes&message=Account creation failed. Username might already be taken.&color=red');
             die();
         }
 
         $stmt->close();
         $con->close();
-        $_SESSION['success'] = 'Account created!';
+        header('Location: login.php?message=Account created!&color=green');
+        die();
+
+    }
+
+    if(isset($_POST['sign-up']) && $settings['allow-sign-up']) {
+
+        if(!empty($settings['captcha-private']) && !empty($settings['captcha-public'])) {
+
+            $reCaptchaValidationUrl = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$settings['captcha-private']."&response=".$_POST['g-recaptcha-response']."&remoteip=".$_SERVER['REMOTE_ADDR']);
+            $result = json_decode($reCaptchaValidationUrl, TRUE);
+
+            if($result['success'] == 1) {
+                signUp();
+            } else {
+                header('Location: login.php?modal=yes&message=reCaptcha failed.&color=red');
+                die();
+            }
+
+        } else {
+            
+            signUp();
+
+        }
 
     }
 
@@ -128,12 +148,34 @@
         <link href="assets/css/main.min.css" rel="stylesheet" />
         <link href="assets/css/font-awesome.min.css" rel="stylesheet"/>
         <link rel="shortcut icon" href="assets/icons/icon-96.png" />
+        <?php if(!empty($settings['captcha-private']) && !empty($settings['captcha-public'])) { echo '<script src="https://www.google.com/recaptcha/api.js"></script>'; } ?>
         <style>
             form {
                 margin-top: 20px;
                 padding-bottom: 10px;
             }
+            .recap {
+                display: block;
+                width: min-content;
+                margin: 0 auto !important;
+            }
+            footer {
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+            }
         </style>
+        <script>
+            function getParameterByName(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, "\\$&");
+                const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+                if(!results) return null;
+                if(!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+        </script>
     </head>
     <body>
 
@@ -150,63 +192,36 @@
             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                 <input type="text" name="username" id="username" placeholder="Username" required="required" />
                 <input type="password" name="password" id="password" placeholder="Password" required="required" />
-                <button type="button" id="create-account">Create account</button>
+                <?php if($settings['allow-sign-up']) { echo '<button type="button" id="create-account">Create account</button>'; } ?>
                 <button type="submit" name="sign-in" style="font-size: 1.4em">Login</button>
             </form>
-            <p class="success"><?php if(isset($_SESSION['success'])) { echo $_SESSION['success']; } ?></p>
-            <p class="error"><?php if(isset($_SESSION['error'])) { echo $_SESSION['error']; } ?></p>
+            <p class="message"></p>
 
         </main>
 
-        <div class="modal" id="account-modal">
-            <div class="inner">
-                <i id="close-create-account" class="fa fa-close close-modal" aria-hidden="true"></i>
-                <h1>Create new account</h1>
-                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                    <label for="new-username">Username</label>
-                    <input type="text" name="new-username" id="new-username" required="required" />
-                    <label for="new-password">Password (min 8 chars)</label>
-                    <input type="password" name="new-password" id="new-password" required="required" min="8"/>
-                    <label for="repeat-password">Repeat password</label>
-                    <input type="password" name="repeat-password" id="repeat-password" required="required" />
-                    <input type="submit" name="sign-up" value="Sign up" style="margin:auto;display:block;margin-top:10px;" />
-                    <p class="error"><?php if(isset($_SESSION['error'])) {echo $_SESSION['error']; } ?></p>
-                </form>
-            </div>
-        </div>
+        <footer>
+            olback &copy; <?php echo date('Y'); ?>
+        </footer>
+
+        <?php
+            if($settings['allow-sign-up']) {
+                require(__DIR__.'/include/sign-up.php');
+            }
+        ?>
 
         <script>
 
-            function getParameterByName(name, url) {
-                if (!url) url = window.location.href;
-                name = name.replace(/[\[\]]/g, "\\$&");
-                const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                results = regex.exec(url);
-                if(!results) return null;
-                if(!results[2]) return '';
-                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            const message = document.getElementsByClassName('message');
+            for(let i = 0; i < message.length; i++) {
+                message[i].innerHTML = getParameterByName('message');
+                let color = getParameterByName('color');
+                if(color) {
+                    message[i].style.color = color;
+                } else {
+                    message[i].style.color = 'black';
+                }
             }
 
-            document.getElementById('create-account').onclick = () => {
-                document.getElementById('account-modal').style.display = 'block';
-            }
-
-            document.getElementById('close-create-account').onclick = () => {
-                document.getElementById('account-modal').style.display = 'none';
-            }
-
-            if(getParameterByName('new-acc') == 'true') {
-                document.getElementById('account-modal').style.display = 'block';
-            }
         </script>
     </body>
 </html>
-
-<?php 
-
-    // Unset variables;
-    unset($_SESSION['error']);
-    unset($_SESSION['success']);
-    session_destroy();
-
-?>

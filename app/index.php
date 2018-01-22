@@ -24,7 +24,7 @@
             $_SESSION['error'] = 'Unable to update API Key.';
             $stmt->close();
             $con->close();
-            die('Shit');
+            die();
 
         } else {
 
@@ -92,7 +92,6 @@
                 <li class="add-note-button"><i class="fa fa-plus" aria-hidden="true"></i> <span>Add note</span></li>
                 <li id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i> <span>Reload</span></li>
                 <li id="profile-button"><i class="fa fa-user-circle-o" aria-hidden="true"></i> <span>Profile</span></li>
-                <!-- (yet to be implemented) <li id="admin-button"><i class="fa fa-wrench" aria-hidden="true"></i> <span>Admin</span></li>-->
                 <li id="logout-button"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log out</span></li>
             </ul>
 
@@ -172,28 +171,21 @@
                     <img src="assets/images/profile_img.png" alt="Profile image"/>
                     <figcaption><?php echo $_COOKIE['username']; ?></figcaption>
                 </figure>
-                <form method="post">
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <label for="api-key">API Key</label>
                     <input type="text" id="api-key" readonly="readonly" value="<?php echo $_COOKIE['api_key']; ?>">
                     <div class="buttons">
                         <button type="submit" class="clear" name="new-api-key">Reset API Key</button>
                         <!--<input type="submit" value="Save" style="width: 100px;">-->
-                        <?php if(isset($_SESSION['error'])) {
-                            echo '<p>'.$_SESSION['error'].'</p>';
-                            session_destroy();
-                        } ?>
                     </div>
+                    <p class="reset-api-key">Clicking 'Reset API Key' will sign you out from every device.</p>
+                    <?php if(isset($_SESSION['error'])) {
+                        echo '<p style="text-align: center;">'.$_SESSION['error'].'</p>';
+                        session_destroy();
+                    } ?>
                 </form>
             </div>
         </div>
-
-        <!-- App settings (yet to be implemented)-->
-        <!--<div class="modal" id="admin">
-            <div class="inner">
-                <i class="fa fa-close close-modal" aria-hidden="true"></i>
-                <h1>Admin</h1>
-            </div>
-        </div>-->
 
     </body>
 </html>

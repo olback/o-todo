@@ -178,7 +178,7 @@ window.onload = () => {
     
             } else if(data.error) {
                 
-                document.getElementById('new-note-status').innerHTML = 'Failed to add note to database.';
+                document.getElementById('new-note-status').innerHTML = data.message;
                 showStatus('Failed to add note.', 'danger');
     
             }

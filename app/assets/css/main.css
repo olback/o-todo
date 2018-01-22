@@ -495,22 +495,18 @@ div.modal > div.inner > h1 {
     margin-top: 15px;
 }
 
-
-p.error {
-    display: block;
-    margin: auto;
-    color: red;
-    text-align: center;
-    margin-top: 10px;
-}
-
-p.success {
+p.message {
     display: block;
     margin: auto;
     color: green;
     text-align: center;
     margin-top: 10px;
-    z-index: 100;
+}
+
+.reset-api-key {
+    text-align: center;
+    font-size: 12px;
+    color: #aaa;
 }
 
 ::-webkit-scrollbar {

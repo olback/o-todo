@@ -83,7 +83,7 @@
 
             } else {
 
-                $return = ['error' => true, 'code' => 200, 'message' => 'Unable to add note to database', 'method' => $method];
+                $return = ['error' => true, 'code' => 200, 'message' => 'Unable to add note to database. Make sure all fields are filled in.', 'method' => $method];
 
             }
     
