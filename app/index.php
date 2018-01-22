@@ -7,6 +7,36 @@
         die();
     }
 
+    if(isset($_POST['new-api-key'])) {
+
+        require(__DIR__.'/api/initdb.php');
+
+        session_start();
+
+        $new_API_key = generateRandomString(25);
+
+        $stmt = $con->prepare("UPDATE `users` SET `api_key`=? WHERE `username`=? AND `api_key`=?");
+        $stmt->bind_param('sss', $new_API_key, $_COOKIE['username'], $_COOKIE['api_key']);
+        $stmt->execute();
+
+        if($stmt->error) {
+
+            $_SESSION['error'] = 'Unable to update API Key.';
+            $stmt->close();
+            $con->close();
+            die('Shit');
+
+        } else {
+
+            $stmt->close();
+            $con->close();
+            header('Location: login.php');
+            die();
+
+        }
+
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -142,12 +172,16 @@
                     <img src="assets/images/profile_img.png" alt="Profile image"/>
                     <figcaption><?php echo $_COOKIE['username']; ?></figcaption>
                 </figure>
-                <form>
+                <form method="post">
                     <label for="api-key">API Key</label>
                     <input type="text" id="api-key" readonly="readonly" value="<?php echo $_COOKIE['api_key']; ?>">
                     <div class="buttons">
-                        <button type="button" class="clear">Reset API Key</button>
+                        <button type="submit" class="clear" name="new-api-key">Reset API Key</button>
                         <!--<input type="submit" value="Save" style="width: 100px;">-->
+                        <?php if(isset($_SESSION['error'])) {
+                            echo '<p>'.$_SESSION['error'].'</p>';
+                            session_destroy();
+                        } ?>
                     </div>
                 </form>
             </div>

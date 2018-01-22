@@ -123,6 +123,10 @@ window.onload = () => {
         openModal('profile');
     }
 
+    document.getElementsByTagName('figure')[0].onclick = () => {
+        openModal('profile');
+    }
+
     // document.getElementById('admin-button').onclick = () => {
     //     openModal('admin');
     // }

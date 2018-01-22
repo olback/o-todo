@@ -1,21 +1,21 @@
-## Goal
+# Goal
 My goal with this project was to create a simple, self-hosted to-do app that does not rely on any dependencies or frameworks.  
 I also wanted to make an API that was easy to use so that user can build their own clients.
 
-## Stack
+# Stack
 * A web server (preferably nginx)
 * PHP 7.0 (latest release should work)
 * MySQL (MariaDB should also work)
 
 Make sure to enable MySQLi in your php.ini config file!
 
-## API
+# API
 Right now, you may only access the API if you're logged in. This will change.  
 In the future, you will be able to add/remove/update notes without being logged in by using your username and an API-key.  
 I recomend [Postman](https://www.getpostman.com/) if you'd like to test the API.
 
 
-### Get notes
+## Get notes
 `GET api/api/.php?action=list` responds like this when there is data:
 ```json
 {
@@ -46,7 +46,7 @@ And if there is none, this is what you'll get;
 }
 ```
 
-### Add a note
+## Add a note
 To add a note to your to-do-list:
 `POST  api/api.php`  
 Body:
@@ -68,7 +68,7 @@ Response on success:
 }
 ```
 
-### Delete a note
+## Delete a note
 To delete a note, send a DELETE request:
 `DELETE api/api.php`
 Body:
@@ -85,7 +85,7 @@ Response on success:
 }
 ```
 
-### Errors
+## Errors
 If a request is correct but something else fails, you'll get a response like this:
 ```json
 {

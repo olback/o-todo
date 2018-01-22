@@ -1,0 +1,2 @@
+# Ignore db config.
+app/api/db_conf.php
