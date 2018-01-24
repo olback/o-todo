@@ -17,6 +17,11 @@
     src: url('../fonts/CabinSketch-Regular.ttf');
 }
 
+:root {
+    --theme-color: #fc0;
+    --light-gray: #888;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -28,7 +33,7 @@ html, body {
 }
 
 nav {
-    background-color: #ffcc00;
+    background-color: var(--theme-color);
     height: 59px;
     width: 100%;
     position: fixed;
@@ -131,7 +136,7 @@ aside > ul > li:last-child {
 footer {
     bottom: 10px !important;
     position: absolute;
-    color: #aaa;
+    color: var(--light-gray);
     display: block;
     width: 100%;
     font-size: 1em;
@@ -365,6 +370,7 @@ form {
     display: block;
     width: 90%;
     overflow-y: scroll;
+    text-align: center;
 }
 
 label {
@@ -375,13 +381,14 @@ label {
     margin-top: 10px;
     font-size: 1em;
     padding: 0.2em 0;
+    text-align: left;
 }
 
 input:focus {
     border-color: #333;
 }
 
-button, input[type=button], input[type=submit], #create-account, #reset-password {
+button, input[type=button], input[type=submit] {
     width: max-content;
     border: none;
     background-color: transparent;
@@ -391,6 +398,8 @@ button, input[type=button], input[type=submit], #create-account, #reset-password
     transition: 0.2s;
     padding: 0 20px;
     outline: none;
+    display: inline-block;
+    margin: 0 5px;
 }
 
 button:hover, input[type=button]:hover, input[type=submit]:hover, #create-account:hover, #reset-password:hover {
@@ -498,7 +507,7 @@ div.modal > div.inner > h1 {
 p.message {
     display: block;
     margin: auto;
-    color: green;
+    color: black;
     text-align: center;
     margin-top: 10px;
 }

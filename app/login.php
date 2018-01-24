@@ -1,10 +1,7 @@
 <?php
 
-    $settings = [
-        'allow-sign-up' => true, // Allow new users?
-        'captcha-private' => '', // If you want a reCaptcha when creating new accounts.
-        'captcha-public' => '' // Site key
-    ];
+    // Load settings
+    $settings = require(__DIR__.'/api/settings.php');
 
     // Sign out the user when navigating to this page.
     setcookie('api_key', NULL);
@@ -115,7 +112,7 @@
 
     if(isset($_POST['sign-up']) && $settings['allow-sign-up']) {
 
-        if(!empty($settings['captcha-private']) && !empty($settings['captcha-public'])) {
+        if(!empty($settings['recaptcha']['captcha-private']) && !empty($settings['recaptcha']['captcha-public'])) {
 
             $reCaptchaValidationUrl = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$settings['captcha-private']."&response=".$_POST['g-recaptcha-response']."&remoteip=".$_SERVER['REMOTE_ADDR']);
             $result = json_decode($reCaptchaValidationUrl, TRUE);
@@ -154,6 +151,9 @@
                 margin-top: 20px;
                 padding-bottom: 10px;
             }
+            input:last-of-type {
+                padding-top: 10px;
+            }
             .recap {
                 display: block;
                 width: min-content;
@@ -190,8 +190,8 @@
             <h1>o-todo Login</h1>
 
             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                <input type="text" name="username" id="username" placeholder="Username" required="required" />
-                <input type="password" name="password" id="password" placeholder="Password" required="required" />
+                <input type="text" name="username" id="username" placeholder="Username" required="required" min="4" />
+                <input type="password" name="password" id="password" placeholder="Password" required="required" min="8" />
                 <?php if($settings['allow-sign-up']) { echo '<button type="button" id="create-account">Create account</button>'; } ?>
                 <button type="submit" name="sign-in" style="font-size: 1.4em">Login</button>
             </form>

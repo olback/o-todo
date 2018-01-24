@@ -175,6 +175,7 @@ window.onload = () => {
                 document.getElementById('new-note-due-date').value = '';
                 document.getElementById('new-note-importance').value = '0';
                 showStatus('Added note.', 'ok');
+                log('Success. Added note to list.');
     
             } else if(data.error) {
                 
@@ -184,7 +185,7 @@ window.onload = () => {
             }
         })
         .catch(function (error) {
-            console.log('Request failed', error);
+            log('Request failed', error);
             document.getElementById('new-note-status').innerHTML = 'Failed to add note to database.'; 
             showHint('Error', error, true);
             showStatus('Failed to add note.', 'danger');
@@ -200,6 +201,10 @@ function openModal(m) {
 
     side_menu.style.width = 0;
     document.getElementById(m).style.display = 'block';
+    let messages = document.getElementsByClassName('message');
+    for(let i = 0; i < messages.length; i++) {
+        messages[i].innerHTML = '';
+    }
 
 }
 
@@ -210,15 +215,20 @@ function handleNoteActions() {
     for(let i = 0; i < articles.length; i++) {
 
         articles[i].onclick = (e) => {
-            document.getElementById('edit-note').style.display = 'block';
+
+            openModal('edit-note');
             document.getElementById('edit-note-title').value = articles[i].getAttribute('title');
             document.getElementById('edit-note-note').innerHTML = articles[i].getAttribute('note');
             document.getElementById('edit-note-due-date').value = articles[i].getAttribute('due');
             document.getElementById('edit-note-importance').value = articles[i].getAttribute('importance');
             document.getElementById('edit-note-id').value = articles[i].getAttribute('note-id');
-            document.getElementById('edit-mark-done').onclick = () => {
+            document.getElementById('edit-note-done').onclick = () => {
                 noteDone(articles[i]);
             }
+            document.getElementById('edit-note-update').onclick = () => {
+                updateNote(articles[i]);
+            }
+            
         }
 
         let a_pos_y;
@@ -271,8 +281,6 @@ function showHint(title, body, isError) {
 function noteDone(article) {
 
     if(article) {
-        article.style.opacity = '0';
-        document.getElementById('edit-note').style.display = 'none';
 
         for(let i = 0; i < article_ids.length; i++) {
 
@@ -298,22 +306,25 @@ function noteDone(article) {
                         fetchNotes();
                         log('Success. Removed note.');
                         showStatus('Removed note.', 'ok');
+                        article.style.opacity = '0';
+                        document.getElementById('edit-note').style.display = 'none';
+                        article_ids.splice(i, 1);
 
                     } else if(data.error) {
                         
                         log('Failed to remove note');
-                        showStatus('Failed to remove note', 'danger');
+                        showStatus('Failed to remove note.', 'danger');
+                        document.getElementById('edit-note-status').innerHTML = data.message;
             
                     }
                 })
                 .catch(function (error) {
                     console.log('Request failed', error);
-                    document.getElementById('new-note-status').innerHTML = 'Failed to add note to database.'; 
+                    document.getElementById('edit-note-status').innerHTML = 'Failed to remove note from database.'; 
+                    showStatus('Failed to remove note.', 'danger');
                     showHint('Error', error, true);
                 });
 
-
-                article_ids.splice(i, 1);
 
             }
 
@@ -323,6 +334,52 @@ function noteDone(article) {
             article.style.display = 'none';
             showHint();
         }, 300);
+
+    }
+
+}
+
+function updateNote(article) {
+
+    if(article) {
+
+        let note_id = article.getAttribute('note-id');
+        let putBody = 'update-note=1&updated-note-title='+document.getElementById('edit-note-title').value+'&updated-note-body='+document.getElementById('edit-note-note').value+'&updated-note-due-date='+document.getElementById('edit-note-due-date').value+'&updated-note-importance='+document.getElementById('edit-note-importance').value+'&note-id='+note_id;
+
+        fetch(api_url, {
+            method: 'put',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            credentials: 'include',
+            body: putBody
+        })
+        .then(json)
+        .then(function (data) {
+            //log('Request succeeded with JSON response', data);
+            if(!data.error) {
+                
+                fetchNotes();
+                log('Success. Updated note.');
+                showStatus('Updated note.', 'ok');
+                document.getElementById('edit-note').style.display = 'none';
+                document.getElementById('edit-note-status').innerHTML = ''; 
+
+            } else if(data.error) {
+                
+                log('Failed to update note');
+                document.getElementById('edit-note-status').innerHTML = data.message;
+                showStatus('Failed to update note.', 'danger');
+    
+            }
+        })
+        .catch(function (error) {
+            log('Request failed', error);
+            document.getElementById('edit-note-status').innerHTML = 'Failed to update note.'; 
+            showStatus('Failed to update note.', 'danger');
+            showHint('Error', error, true);
+        });
+
     }
 
 }
@@ -384,8 +441,8 @@ function json(response) {
         return {
             HTTP_STATUS: response.status,
             HTTP_STATUS_TEXT: response.statusText,
-            errorTitle: "Error",
-            errorMsg: "Server responded with HTTP satus:<br>" + response.status + " " + response.statusText,
+            title: "Error",
+            message: "Server responded with HTTP satus:<br>" + response.status + " " + response.statusText,
             error: true
         };
 
@@ -441,20 +498,21 @@ function fetchNotes() {
                 article_ids.push(data.notes[i].id);
 
                 handleNoteActions();
-                showHint('Add a note', 'Click the <i class="fa fa-plus" aria-hidden="true"></i> icon at the top of the screen or via the sidemenu.');
-                
+
             }
+
+            showHint('Add a note', 'Click the <i class="fa fa-plus" aria-hidden="true"></i> icon at the top of the screen or via the sidemenu.');
 
         } else if(data.error) {
 
-            showHint(data.errorTitle, data.errorMsg, true);
+            showHint(data.title, data.message, true);
             showStatus('Failed to refresh notes.', 'danger');
 
         }
 
     })
     .catch(function (error) {
-        console.log('Request failed', error);
+        log('Request failed', error);
         showHint('Error', error, true);
         showStatus('Failed to refresh notes.', 'danger');
     });

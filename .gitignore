@@ -1,2 +1,3 @@
-# Ignore db config.
+# Ignore configs.
 app/api/db_conf.php
+app/api/settings.php

@@ -24,7 +24,6 @@
             $_SESSION['error'] = 'Unable to update API Key.';
             $stmt->close();
             $con->close();
-            die();
 
         } else {
 
@@ -104,11 +103,11 @@
         </aside>
 
         <div id="timed-status">
-            <span id="timed-status-text">Hello gais</span>
+            <span id="timed-status-text"></span>
         </div>
         <div id="timed-status-bar"></div>
 
-        <!-- Displayed when JavaScript is disabled. -->
+        <!-- Displayed if JavaScript is disabled. -->
         <noscript>
             <div class="container">
                 <div class="inner">
@@ -154,10 +153,9 @@
                     <label for="edit-note-importance">Importance</label>
                     <input type="number" name="edit-note-importance" id="edit-note-importance" min="0" value="0" max="100">
                     <input type="text" name="edit-note-id" id="edit-note-id" class="hidden">
-                    <div class="buttons">
-                        <button class="clear" type="button" id="edit-mark-done">Mark as done</button>
-                        <!--<input disabled="disabled" type="button" name="edit-note-submit" value="Update note">-->
-                    </div>
+                    <button class="clear" type="button" id="edit-note-done">Mark as done</button>
+                    <button class="clear" type="button" id="edit-note-update">Update note</button>
+                    <p class="message" id="edit-note-status"></p>
                 </form>
             </div>
         </div>
@@ -174,10 +172,7 @@
                 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <label for="api-key">API Key</label>
                     <input type="text" id="api-key" readonly="readonly" value="<?php echo $_COOKIE['api_key']; ?>">
-                    <div class="buttons">
-                        <button type="submit" class="clear" name="new-api-key">Reset API Key</button>
-                        <!--<input type="submit" value="Save" style="width: 100px;">-->
-                    </div>
+                    <button type="submit" class="clear" name="new-api-key">Reset API Key</button>
                     <p class="reset-api-key">Clicking 'Reset API Key' will sign you out from every device.</p>
                     <?php
                         if(isset($_SESSION['error'])) {

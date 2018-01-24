@@ -1,6 +1,6 @@
 <?php
 
-    // Functions...?
+    // Some helper functions
 
     function generateRandomString($length = 25) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -12,6 +12,7 @@
         return $randomString;
     }
 
+    // Check if a user is logged in and verify that it's actually a real user.
     function loggedIn() {
 
         if(!isset($_COOKIE['api_key']) || !isset($_COOKIE['username'])) {
@@ -40,7 +41,7 @@
           
         } else {
 
-            $_SESSION['error'] = 'Username or password incorrect.';
+            return false;
             
         }
 
