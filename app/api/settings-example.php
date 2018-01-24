@@ -11,8 +11,8 @@
             'database' => 'o-todo'
         ],
         'recaptcha' => [
-            'captcha-private' => '', // If you want a reCaptcha when creating new accounts.
-            'captcha-public' => '' // Site key
+            'private' => '', // If you want a reCaptcha when creating new accounts.
+            'public' => '' // Site key
         ],
         'allow-sign-up' => true // Allow new users?
     ];
