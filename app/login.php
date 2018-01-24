@@ -33,7 +33,7 @@
 
                 } else {
 
-                    header('Location: login.php?modal=yes&message=Username or password incorrect.&color=red');
+                    header('Location: login.php?message=Username or password incorrect.&color=red');
 
                 }
                 
@@ -41,7 +41,7 @@
           
         } else {
 
-            header('Location: login.php?modal=yes&message=Username or password incorrect.&color=red');
+            header('Location: login.php?message=Username or password incorrect.&color=red');
 
         }
 
