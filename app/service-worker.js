@@ -46,6 +46,7 @@ self.addEventListener('install', event => {
           'assets/fonts/CabinSketch-Regular.ttf',
           'assets/fonts/fontawesome-webfont.ttf',
           'assets/fonts/Roboto-Regular.ttf',
+          'assets/fonts/TwitterColorEmoji-SVGinOT.ttf',
           'assets/images/profile_img.png',
           'assets/images/sidenav-bg.png',
           'assets/main.js',

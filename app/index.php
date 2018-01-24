@@ -46,8 +46,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffcc00" />
         <meta name="mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <link href="assets/css/main.min.css" rel="stylesheet" />
-        <link href="assets/css/font-awesome.min.css" rel="stylesheet"/>
+        <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
         <link rel="shortcut icon" href="assets/icons/icon-96.png" />
         <link rel="manifest" href="manifest.json" />
         <script src="assets/main.js"></script>

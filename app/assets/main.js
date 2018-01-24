@@ -228,7 +228,7 @@ function handleNoteActions() {
             document.getElementById('edit-note-update').onclick = () => {
                 updateNote(articles[i]);
             }
-            
+
         }
 
         let a_pos_y;
@@ -308,7 +308,6 @@ function noteDone(article) {
                         showStatus('Removed note.', 'ok');
                         article.style.opacity = '0';
                         document.getElementById('edit-note').style.display = 'none';
-                        article_ids.splice(i, 1);
 
                     } else if(data.error) {
                         
@@ -325,6 +324,7 @@ function noteDone(article) {
                     showHint('Error', error, true);
                 });
 
+                article_ids.splice(i, 1); // Should prbably only be run on success, but for some reason that does not seem to work.
 
             }
 
@@ -363,7 +363,6 @@ function updateNote(article) {
                 log('Success. Updated note.');
                 showStatus('Updated note.', 'ok');
                 document.getElementById('edit-note').style.display = 'none';
-                document.getElementById('edit-note-status').innerHTML = ''; 
 
             } else if(data.error) {
                 
@@ -492,6 +491,10 @@ function fetchNotes() {
                 article.setAttribute("note-id", data.notes[i].id);
                 article.setAttribute("created", data.notes[i].created);
                 article.setAttribute("importance", data.notes[i].importance);
+
+                if(new Date(data.notes[i].due).getTime() - new Date().getTime() < 0) {
+                    span.style.color = '#cc0018';
+                }
         
                 list.appendChild(article);
 

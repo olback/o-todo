@@ -16,8 +16,8 @@
             <input type="password" name="new-password" id="new-password" required="required" min="8"/>
             <label for="repeat-password">Repeat password</label>
             <input type="password" name="repeat-password" id="repeat-password" required="required" />
-            <?php if(!empty($settings['captcha-private']) && !empty($settings['captcha-public'])) { echo '<div class="recap"><div class="g-recaptcha" data-sitekey="'.$settings['captcha-public'].'"></div></div>'; } ?>
-            <input type="submit" name="sign-up" value="Sign up" style="margin:auto;display:block;margin-top:10px;" />
+            <?php if(!empty($settings['recaptcha']['private']) && !empty($settings['recaptcha']['public'])) { echo '<div class="recap"><div class="g-recaptcha" data-sitekey="'.$settings['recaptcha']['public'].'"></div></div>'; } ?>
+            <button type="submit" name="sign-up" style="font-size: 1.4em; margin-top: 10px;">Sign up</button>
             <p class="message"></p>
         </form>
     </div>
