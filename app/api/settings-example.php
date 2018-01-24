@@ -4,11 +4,11 @@
 
     return [
         'mysql' => [ // MySQL connection info
-            'host' => '',
-            'port' => '',
-            'username' => '',
+            'host' => 'localhost',
+            'port' => '3306',
+            'username' => 'o-todo',
             'password' => '',
-            'database' => ''
+            'database' => 'o-todo'
         ],
         'recaptcha' => [
             'captcha-private' => '', // If you want a reCaptcha when creating new accounts.
