@@ -114,7 +114,7 @@
 
         if(!empty($settings['recaptcha']['private']) && !empty($settings['recaptcha']['public'])) {
 
-            $reCaptchaValidationUrl = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$settings['private']."&response=".$_POST['g-recaptcha-response']."&remoteip=".$_SERVER['REMOTE_ADDR']);
+            $reCaptchaValidationUrl = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$settings['recaptcha']['private']."&response=".$_POST['g-recaptcha-response']."&remoteip=".$_SERVER['REMOTE_ADDR']);
             $result = json_decode($reCaptchaValidationUrl, TRUE);
 
             if($result['success'] == 1) {
