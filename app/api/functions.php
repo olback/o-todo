@@ -21,11 +21,14 @@
 
         require(__DIR__.'/initdb.php');
 
-        $stmt = $con->prepare("SELECT `username`, `password`, `api_key` FROM `users` WHERE `api_key`=?");
-        $stmt->bind_param('s', $_COOKIE['api_key']);
+        $stmt = $con->prepare("SELECT `username`, `api_key`, `isAdmin` FROM `users` WHERE `username`=? AND `api_key`=?");
+        $stmt->bind_param('ss', $_COOKIE['username'], $_COOKIE['api_key']);
         $stmt->execute();
         
         $data = $stmt->get_result();
+
+        $stmt->close();
+        $con->close();
 
         // if($stmt->error) {
         //     die('Fatal error occured.');
@@ -35,6 +38,8 @@
 
             while($row_data = $data->fetch_assoc()) {
 
+                session_start();
+                $_SESSION['isAdmin'] = $row_data['isAdmin'];
                 return $row_data['username'] == $_COOKIE['username'] && $row_data['api_key'] == $_COOKIE['api_key'];
                 
             }
@@ -44,9 +49,6 @@
             return false;
             
         }
-
-        $stmt->close();
-        $con->close();
 
     }
 
@@ -64,6 +66,15 @@
         } else {
             return 'not found.';
         }
+    }
+
+    function escapeHTML($str, $allowed = ['b','i','a','ul','ol','li','br','strong','em']) {
+        $str = htmlspecialchars($str);
+        foreach( $allowed as $a ){
+            $str = str_replace("&lt;".$a."&gt;", "<".$a.">", $str);
+            $str = str_replace("&lt;/".$a."&gt;", "</".$a.">", $str);
+        }
+        return $str;
     }
 
 ?>

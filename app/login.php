@@ -5,6 +5,7 @@
     require(__DIR__.'/api/functions.php');
 
     // Sign out the user when navigating to this page.
+    session_destroy();
     setcookie('api_key', NULL);
     setcookie('username', NULL);
 

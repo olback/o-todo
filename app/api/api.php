@@ -67,11 +67,11 @@
 
             require(__DIR__.'/initdb.php');
 
-            $note['title'] = htmlspecialchars($_POST['new-note-title']);
-            $note['body'] = htmlspecialchars($_POST['new-note-body']);
-            $note['due'] = htmlspecialchars($_POST['new-note-due-date']);
-            $note['importance'] = htmlspecialchars($_POST['new-note-importance']);
-            $note['created'] = htmlspecialchars($_POST['new-note-create-date']);
+            $note['title'] = escapeHTML($_POST['new-note-title']);
+            $note['body'] = escapeHTML($_POST['new-note-body']);
+            $note['due'] = escapeHTML($_POST['new-note-due-date']);
+            $note['importance'] = escapeHTML($_POST['new-note-importance']);
+            $note['created'] = escapeHTML($_POST['new-note-create-date']);
 
             $stmt = $con->prepare("INSERT INTO notes (`user`, `title`, `body`, `due`, `created`, `importance`) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->bind_param('sssssi', $_COOKIE['username'], $note['title'], $note['body'], $note['due'], $note['created'], $note['importance']);
@@ -142,7 +142,7 @@
 
             require(__DIR__.'/initdb.php');
             $stmt = $con->prepare("UPDATE `notes` SET `title`=?, `body`=?, `due`=?, `importance`=? WHERE `user`=? AND `id`=?");
-            $stmt->bind_param('sssisi', $_PUT['updated-note-title'], $_PUT['updated-note-body'], $_PUT['updated-note-due-date'], $_PUT['updated-note-importance'], $_COOKIE['username'], $_PUT['note-id']);
+            $stmt->bind_param('sssisi', escapeHTML($_PUT['updated-note-title']), escapeHTML($_PUT['updated-note-body']), escapeHTML($_PUT['updated-note-due-date']), escapeHTML($_PUT['updated-note-importance']), $_COOKIE['username'], $_PUT['note-id']);
             $stmt->execute();
 
             if(!$stmt->error && $stmt->affected_rows == 1) {

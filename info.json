@@ -1,7 +1,7 @@
 {
-    "author": "olback",
-    "twitter": "@MrOlback",
-    "github": "olback",
-    "project_url": "https://github.com/olback/o-todo",
-    "version": 0.37
+    "twitter": "@MrOlback", 
+    "github": "olback", 
+    "version": 0.39, 
+    "project_url": "https://github.com/olback/o-todo", 
+    "author": "olback"
 }

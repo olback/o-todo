@@ -21,18 +21,16 @@
 
         if($stmt->error) {
 
-            $_SESSION['error'] = 'Unable to update API Key.';
-            $stmt->close();
-            $con->close();
+            header('Location: index.php?modal=profile&message=Unable to update API Key.');
 
         } else {
 
-            $stmt->close();
-            $con->close();
-            header('Location: login.php');
-            die();
+            header('Location: login.php?message=API Key reset.');
 
         }
+
+        $stmt->close();
+        $con->close();
 
     }
 
@@ -92,6 +90,9 @@
                 <li class="add-note-button"><i class="fa fa-plus" aria-hidden="true"></i> <span>Add note</span></li>
                 <li id="refresh"><i class="fa fa-refresh" aria-hidden="true"></i> <span>Reload</span></li>
                 <li id="profile-button"><i class="fa fa-user-circle-o" aria-hidden="true"></i> <span>Profile</span></li>
+                <?php if($_SESSION['isAdmin']) {
+                    echo '<li id="admin-button"><i class="fa fa-wrench" aria-hidden="true"></i> <span>Admin settings</span></li>';
+                } ?>
                 <li id="logout-button"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log out</span></li>
             </ul>
 
@@ -134,7 +135,7 @@
                     <input type="number" id="new-note-importance" min="0" value="0" max="100">
                     <input type="date" id="new-note-create-date" class="hidden" />
                     <button type="button" class="clear" id="new-note-submit" style="margin:auto;display:block;">Add note</button>
-                    <p id="new-note-status"></p>
+                    <p class="message"></p>
                 </form>
             </div>
         </div>
@@ -156,7 +157,7 @@
                     <input type="text" name="edit-note-id" id="edit-note-id" class="hidden">
                     <button class="clear" type="button" id="edit-note-done">Mark as done</button>
                     <button class="clear" type="button" id="edit-note-update">Update note</button>
-                    <p class="message" id="edit-note-status"></p>
+                    <p class="message"></p>
                 </form>
             </div>
         </div>
@@ -175,15 +176,12 @@
                     <input type="text" id="api-key" readonly="readonly" value="<?php echo $_COOKIE['api_key']; ?>">
                     <button type="submit" class="clear" name="new-api-key">Reset API Key</button>
                     <p class="reset-api-key">Clicking 'Reset API Key' will sign you out from every device.</p>
-                    <?php
-                        if(isset($_SESSION['error'])) {
-                            echo '<p style="text-align: center;">'.$_SESSION['error'].'</p>';
-                        }
-                        session_destroy();
-                    ?>
+                    <p class="message"></p>
                 </form>
             </div>
         </div>
+
+        <?php if($_SESSION['isAdmin']) { require(__DIR__.'/include/admin.php'); }?>
 
     </body>
 </html>

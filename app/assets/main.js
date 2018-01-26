@@ -10,21 +10,16 @@ const log = console.log;
 const current_year = new Date().getFullYear();
 
 let side_menu;
+let messages;
 let article_ids = [];
 
 window.onload = () => {
 
     const year_elements = document.getElementsByClassName('current-year');
     side_menu = document.getElementById('side-menu');
+    messages = document.getElementsByClassName('message');
     const list = document.getElementById('list');
     const body = document.getElementsByTagName('body');
-
-    // Fill in the current year.
-    for(let i = 0; i < year_elements.length; i++) {
-
-        year_elements[i].innerHTML = current_year;
-
-    }
 
     // Open menu.
     document.getElementById('menu-button').onclick = () => {
@@ -42,7 +37,7 @@ window.onload = () => {
 
     // Let the user use the scroll wheel to scroll sideways.
     list.onwheel = (e) => {
-
+        
         side_menu.style.width = 0;
 
         if(e.deltaY > 0) {
@@ -88,6 +83,7 @@ window.onload = () => {
 
     }
 
+    // Close sidenav on swipe.
     body[0].ontouchmove = (e) => {
 
         if(b_txs <= 50 && (e.touches[0].clientX - b_txs) > 50) {
@@ -127,10 +123,6 @@ window.onload = () => {
         openModal('profile');
     }
 
-    // document.getElementById('admin-button').onclick = () => {
-    //     openModal('admin');
-    // }
-
     document.getElementById('logout-button').onclick = () => {
         window.location = 'login.php';
     }
@@ -141,7 +133,6 @@ window.onload = () => {
         api_key.select();
         document.execCommand('copy');
     }
-
 
     document.getElementById('refresh').onclick = () => {
         //window.location.reload();
@@ -169,41 +160,64 @@ window.onload = () => {
                 
                 fetchNotes();
                 document.getElementById('add-note').style.display = 'none';
-                document.getElementById('new-note-status').innerHTML = '';
                 document.getElementById('new-note-title').value = '';
                 document.getElementById('new-note-body').value = '';
                 document.getElementById('new-note-due-date').value = '';
                 document.getElementById('new-note-importance').value = '0';
+                setMessages('');
                 showStatus('Added note.', 'ok');
                 log('Success. Added note to list.');
     
             } else if(data.error) {
                 
-                document.getElementById('new-note-status').innerHTML = data.message;
+                setMessages(data.message);
                 showStatus('Failed to add note.', 'danger');
     
             }
         })
         .catch(function (error) {
             log('Request failed', error);
-            document.getElementById('new-note-status').innerHTML = 'Failed to add note to database.'; 
+            setMessages('Failed to add note to database.');
             showHint('Error', error, true);
             showStatus('Failed to add note.', 'danger');
         });
     
     }
 
+    if(getParameterByName('modal')) {
+
+        if(getParameterByName('message')) {
+            setMessages(getParameterByName('message'));
+            openModal(getParameterByName('modal'), true);
+        } else {
+            openModal(getParameterByName('modal'));
+        }
+
+    }
+
     fetchNotes();
 
+} // End window.onload
+
+// Function name says it all.
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+    if(!results) return null;
+    if(!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-function openModal(m) {
+function openModal(m, km) {
 
     side_menu.style.width = 0;
     document.getElementById(m).style.display = 'block';
-    let messages = document.getElementsByClassName('message');
-    for(let i = 0; i < messages.length; i++) {
-        messages[i].innerHTML = '';
+    if(!km) {
+        for(let i = 0; i < messages.length; i++) {
+            messages[i].innerHTML = '';
+        }
     }
 
 }
@@ -218,7 +232,8 @@ function handleNoteActions() {
 
             openModal('edit-note');
             document.getElementById('edit-note-title').value = articles[i].getAttribute('title');
-            document.getElementById('edit-note-note').innerHTML = articles[i].getAttribute('note');
+            document.getElementById('edit-note-note').innerText = articles[i].getAttribute('note');
+            document.getElementById('edit-note-note').value = articles[i].getAttribute('note');
             document.getElementById('edit-note-due-date').value = articles[i].getAttribute('due');
             document.getElementById('edit-note-importance').value = articles[i].getAttribute('importance');
             document.getElementById('edit-note-id').value = articles[i].getAttribute('note-id');
@@ -313,13 +328,13 @@ function noteDone(article) {
                         
                         log('Failed to remove note');
                         showStatus('Failed to remove note.', 'danger');
-                        document.getElementById('edit-note-status').innerHTML = data.message;
+                        setMessages(data.message);
             
                     }
                 })
                 .catch(function (error) {
                     console.log('Request failed', error);
-                    document.getElementById('edit-note-status').innerHTML = 'Failed to remove note from database.'; 
+                    setMessages('Failed to remove note from database.');
                     showStatus('Failed to remove note.', 'danger');
                     showHint('Error', error, true);
                 });
@@ -367,20 +382,26 @@ function updateNote(article) {
             } else if(data.error) {
                 
                 log('Failed to update note');
-                document.getElementById('edit-note-status').innerHTML = data.message;
+                setMessages(data.message);
                 showStatus('Failed to update note.', 'danger');
     
             }
         })
         .catch(function (error) {
             log('Request failed', error);
-            document.getElementById('edit-note-status').innerHTML = 'Failed to update note.'; 
+            setMessages('Failed to update note.');
             showStatus('Failed to update note.', 'danger');
             showHint('Error', error, true);
         });
 
     }
 
+}
+
+function setMessages(m) {
+    for(let i = 0; i < messages.length; i++) {
+        messages[i].innerHTML = m;
+    }
 }
 
 function showStatus(message, color) {
