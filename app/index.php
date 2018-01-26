@@ -49,7 +49,7 @@
         <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
         <link rel="shortcut icon" href="assets/icons/icon-96.png" />
         <link rel="manifest" href="manifest.json" />
-        <script src="assets/main.js"></script>
+        <script src="assets/main.min.js"></script>
     </head>
     <body>
 

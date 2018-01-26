@@ -49,7 +49,7 @@ self.addEventListener('install', event => {
           'assets/fonts/TwitterColorEmoji-SVGinOT.ttf',
           'assets/images/profile_img.png',
           'assets/images/sidenav-bg.png',
-          'assets/main.js',
+          'assets/main.min.js',
           'assets/icons/icon-96.png'
         ]
       );
