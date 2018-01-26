@@ -57,10 +57,10 @@
         die(json_encode($error));
     }
 
-    function version() {
+    function info($key) {
         if(file_exists('../info.json')) {
             // Return first 7 chars of git hash
-            return json_decode(file_get_contents('../info.json'), true)['version'];
+            return json_decode(file_get_contents('../info.json'), true)[$key];
         } else {
             return 'not found.';
         }

@@ -202,9 +202,8 @@
         </main>
 
         <footer>
-            olback &copy; <?php echo date('Y'); ?><br>
-            Please contribute on <i class="fa fa-github" aria-hidden="true" style="color:#333;"></i> <a href="https://github.com/olback/o-todo" target="_blank" class="contribute">Github</a>!<br>
-            Version: <?php echo version(); ?>
+            <?php echo info('author'); ?> &copy; <?php echo date('Y'); ?> &nbsp;&nbsp;&nbsp; v<?php echo info('version'); ?><br>
+            Please contribute on <i class="fa fa-github" aria-hidden="true" style="color:#333;"></i> <a href="<?php echo info('project_url'); ?>" target="_blank" class="contribute">Github</a>!
         </footer>
 
         <!-- Github corner -->

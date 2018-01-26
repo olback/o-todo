@@ -97,8 +97,8 @@
 
             <!-- Footer -->
             <footer>
-                olback &copy; <span class="current-year"></span> <span id="version">v0.1</span><br>
-                Please contribute on <a href="https://github.com/olback/o-todo" target="_blank" class="contribute">GitHub</a>!
+                <?php echo info('author'); ?> &copy; <?php echo date('Y'); ?> <span id="version">v<?php echo info('version'); ?></span><br>
+                Please contribute on <a href="<?php echo info('project_url'); ?>" target="_blank" class="contribute">GitHub</a>!
             </footer>
 
         </aside>
