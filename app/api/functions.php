@@ -61,16 +61,15 @@
 
     function info($key) {
         if(file_exists('../info.json')) {
-            // Return first 7 chars of git hash
             return json_decode(file_get_contents('../info.json'), true)[$key];
         } else {
             return 'not found.';
         }
     }
 
-    function escapeHTML($str, $allowed = ['b','i','a','ul','ol','li','br','strong','em']) {
+    function escapeHTML($str, $allowed = ['b','i','a','ul','ol','li','br','strong','em', 'table', 'tr', 'th', 'td']) {
         $str = htmlspecialchars($str);
-        foreach( $allowed as $a ){
+        foreach($allowed as $a){
             $str = str_replace("&lt;".$a."&gt;", "<".$a.">", $str);
             $str = str_replace("&lt;/".$a."&gt;", "</".$a.">", $str);
         }
